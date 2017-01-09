@@ -1,5 +1,6 @@
 package ed.cracken.pos.ui.products;
 
+import com.vaadin.event.FieldEvents;
 import java.util.Collection;
 
 import org.vaadin.mockapp.samples.backend.DataService;
@@ -75,7 +76,12 @@ public class ProductCrudView extends CssLayout implements View {
         filter.setStyleName("filter-textfield");
         filter.setInputPrompt("Filter");
         filter.setImmediate(true);
-        
+        filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
+            @Override
+            public void textChange(FieldEvents.TextChangeEvent event) {
+                grid.setFilter(event.getText());
+            }
+        });
 
         newProduct = new Button("New product");
         newProduct.addStyleName(ValoTheme.BUTTON_PRIMARY);
