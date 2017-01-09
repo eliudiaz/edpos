@@ -44,6 +44,7 @@ public class ProductForm2 extends CssLayout {
     public void initComponents() {
         setId("product-form");
         setStyleName("product-form-wrapper");
+        addStyleName("product-form");
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
@@ -60,17 +61,20 @@ public class ProductForm2 extends CssLayout {
         formLayout.addComponent(separator);
         formLayout.addComponent(save = new Button("Save") {
             {
-                setStyleName("save");
+                setStyleName("primary");
+                setId("save");
             }
         });
         formLayout.addComponent(cancel = new Button("Cancel") {
             {
                 setStyleName("cancel");
+                setId("cancel");
             }
         });
         formLayout.addComponent(delete = new Button("Delete") {
             {
-                setStyleName("delete");
+                setStyleName("danger");
+                setId("delete");
             }
         });
         addComponent(formLayout);
