@@ -32,9 +32,9 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 public class ProductCrudView extends CssLayout implements View {
 
-    public static final String VIEW_NAME = "Inventory";
-    private ProductGrid grid;
-    private ProductForm form;
+    public static final String VIEW_NAME = "Inventario Productos";
+    private final ProductGrid grid;
+    private final ProductForm form;
 
     private ProductCrudLogic viewLogic = new ProductCrudLogic(this);
     private Button newProduct;
