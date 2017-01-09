@@ -28,7 +28,7 @@ import org.vaadin.mockapp.samples.backend.data.Product;
  *
  * @author edcracken
  */
-public class ProductForm2 extends CssLayout {
+public class ProductForm extends CssLayout {
 
     protected TextField productName;
     protected TextField price;
@@ -81,7 +81,7 @@ public class ProductForm2 extends CssLayout {
 
     }
 
-    public ProductForm2(SampleCrudLogic sampleCrudLogic) {
+    public ProductForm(SampleCrudLogic sampleCrudLogic) {
         super();
         viewLogic = sampleCrudLogic;
         initComponents();

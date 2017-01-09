@@ -29,16 +29,16 @@ import com.vaadin.ui.themes.ValoTheme;
  * See also {@link SampleCrudLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
-public class SampleCrudView extends CssLayout implements View {
+public class ProductCrudView extends CssLayout implements View {
 
     public static final String VIEW_NAME = "Inventory";
     private ProductGrid grid;
-    private ProductForm2 form;
+    private ProductForm form;
 
     private SampleCrudLogic viewLogic = new SampleCrudLogic(this);
     private Button newProduct;
 
-    public SampleCrudView() {
+    public ProductCrudView() {
         setSizeFull();
         addStyleName("crud-view");
         HorizontalLayout topLayout = createTopBar();
@@ -52,7 +52,7 @@ public class SampleCrudView extends CssLayout implements View {
             }
         });
 
-        form = new ProductForm2(viewLogic);
+        form = new ProductForm(viewLogic);
         form.setCategories(DataService.get().getAllCategories());
 
         VerticalLayout barAndGridLayout = new VerticalLayout();

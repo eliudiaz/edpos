@@ -17,9 +17,9 @@ import ed.cracken.pos.ui.ApplicationUI;
  */
 public class SampleCrudLogic {
 
-    private SampleCrudView view;
+    private ProductCrudView view;
 
-    public SampleCrudLogic(SampleCrudView simpleCrudView) {
+    public SampleCrudLogic(ProductCrudView simpleCrudView) {
         view = simpleCrudView;
     }
 
@@ -51,7 +51,7 @@ public class SampleCrudLogic {
         }
 
         Page page = ApplicationUI.get().getPage();
-        page.setUriFragment("!" + SampleCrudView.VIEW_NAME + "/"
+        page.setUriFragment("!" + ProductCrudView.VIEW_NAME + "/"
                 + fragmentParameter, false);
     }
 
