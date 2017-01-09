@@ -22,7 +22,7 @@ import com.vaadin.ui.declarative.Design;
 public class ProductFormDesign extends CssLayout {
     protected TextField productName;
     protected TextField price;
-    protected NumberField stockCount;
+    protected TextField stockCount;
     protected ComboBox availability;
     protected CategoryField category;
     protected Button save;
