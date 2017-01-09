@@ -8,6 +8,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import ed.cracken.pos.ui.ApplicationUI;
 import ed.cracken.pos.ui.about.AboutView;
+import ed.cracken.pos.ui.products.SampleCrudView;
 
 /**
  * Content of the UI when the user is logged in.
@@ -29,8 +30,8 @@ public class MainScreen extends HorizontalLayout {
         final Navigator navigator = new Navigator(ui, viewContainer);
         navigator.setErrorView(ErrorView.class);
         menu = new Menu(navigator);
-//        menu.addView(new SampleCrudView(), SampleCrudView.VIEW_NAME,
-//                SampleCrudView.VIEW_NAME, FontAwesome.EDIT);
+        menu.addView(new SampleCrudView(), SampleCrudView.VIEW_NAME,
+                SampleCrudView.VIEW_NAME, FontAwesome.EDIT);
         menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
                 FontAwesome.INFO_CIRCLE);
 

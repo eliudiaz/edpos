@@ -27,15 +27,13 @@ public class ApplicationUI extends UI {
 
     private AccessControl accessControl = new BasicAccessControl();
 
-    
 //    @Override
 //    protected void init(VaadinRequest request) {
 //        VerticalLayout view = new VerticalLayout();
 //        view.addComponent(new Label("Hello Vaadin!"));
 //        setContent(view);
 //    }
-    
-     @Override
+    @Override
     protected void init(VaadinRequest vaadinRequest) {
         Responsive.makeResponsive(this);
         setLocale(vaadinRequest.getLocale());
@@ -56,6 +54,14 @@ public class ApplicationUI extends UI {
         addStyleName(ValoTheme.UI_WITH_MENU);
         setContent(new MainScreen(ApplicationUI.this));
         getNavigator().navigateTo(getNavigator().getState());
+    }
+
+    public static ApplicationUI get() {
+        return (ApplicationUI) UI.getCurrent();
+    }
+
+    public AccessControl getAccessControl() {
+        return accessControl;
     }
 
 }
