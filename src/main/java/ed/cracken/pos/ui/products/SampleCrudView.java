@@ -33,7 +33,7 @@ public class SampleCrudView extends CssLayout implements View {
 
     public static final String VIEW_NAME = "Inventory";
     private ProductGrid grid;
-    private ProductForm form;
+    private ProductForm2 form;
 
     private SampleCrudLogic viewLogic = new SampleCrudLogic(this);
     private Button newProduct;
@@ -52,7 +52,7 @@ public class SampleCrudView extends CssLayout implements View {
             }
         });
 
-        form = new ProductForm(viewLogic);
+        form = new ProductForm2(viewLogic);
         form.setCategories(DataService.get().getAllCategories());
 
         VerticalLayout barAndGridLayout = new VerticalLayout();

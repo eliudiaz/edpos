@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.vaadin.mockapp.samples.backend.data.Category;
 
-import com.vaadin.data.util.converter.Converter.ConversionException;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
