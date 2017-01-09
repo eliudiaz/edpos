@@ -1,4 +1,4 @@
-package ed.cracken.pos.ui.products;
+package ed.cracken.pos.ui.components;
 
 import java.util.Collection;
 import java.util.HashMap;

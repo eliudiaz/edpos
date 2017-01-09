@@ -26,7 +26,7 @@ import com.vaadin.ui.themes.ValoTheme;
 /**
  * A view for performing create-read-update-delete operations on products.
  *
- * See also {@link SampleCrudLogic} for fetching the data, the actual CRUD
+ * See also {@link ProductCrudLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
 public class ProductCrudView extends CssLayout implements View {
@@ -35,7 +35,7 @@ public class ProductCrudView extends CssLayout implements View {
     private ProductGrid grid;
     private ProductForm form;
 
-    private SampleCrudLogic viewLogic = new SampleCrudLogic(this);
+    private ProductCrudLogic viewLogic = new ProductCrudLogic(this);
     private Button newProduct;
 
     public ProductCrudView() {

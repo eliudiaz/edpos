@@ -1,5 +1,7 @@
 package ed.cracken.pos.ui.products;
 
+import ed.cracken.pos.ui.components.EuroConverter;
+import ed.cracken.pos.ui.components.CollectionToStringConverter;
 import java.util.Collection;
 import java.util.Locale;
 

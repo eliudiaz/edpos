@@ -15,11 +15,11 @@ import ed.cracken.pos.ui.ApplicationUI;
  * the system separately, and to e.g. provide alternative views for the same
  * data.
  */
-public class SampleCrudLogic {
+public class ProductCrudLogic {
 
     private ProductCrudView view;
 
-    public SampleCrudLogic(ProductCrudView simpleCrudView) {
+    public ProductCrudLogic(ProductCrudView simpleCrudView) {
         view = simpleCrudView;
     }
 

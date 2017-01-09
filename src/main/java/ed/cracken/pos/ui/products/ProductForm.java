@@ -5,6 +5,8 @@
  */
 package ed.cracken.pos.ui.products;
 
+import ed.cracken.pos.ui.components.EuroConverter;
+import ed.cracken.pos.ui.components.CategoryField;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -38,7 +40,7 @@ public class ProductForm extends CssLayout {
     protected Button save;
     protected Button cancel;
     protected Button delete;
-    private SampleCrudLogic viewLogic;
+    private ProductCrudLogic viewLogic;
     private BeanFieldGroup<Product> fieldGroup;
 
     public void initComponents() {
@@ -81,7 +83,7 @@ public class ProductForm extends CssLayout {
 
     }
 
-    public ProductForm(SampleCrudLogic sampleCrudLogic) {
+    public ProductForm(ProductCrudLogic sampleCrudLogic) {
         super();
         viewLogic = sampleCrudLogic;
         initComponents();
