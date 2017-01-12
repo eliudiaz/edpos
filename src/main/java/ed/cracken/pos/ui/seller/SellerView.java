@@ -16,9 +16,11 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import java.awt.FlowLayout;
 import java.math.BigDecimal;
 
 /**
@@ -26,6 +28,8 @@ import java.math.BigDecimal;
  * @author eliud
  */
 public class SellerView extends CssLayout implements View {
+
+    public static final String VIEW_NAME = "Ventas";
 
     private Button addProductBtn;
     private TextField productCode;
@@ -39,22 +43,32 @@ public class SellerView extends CssLayout implements View {
     public SellerView() {
         setSizeFull();
         addStyleName("crud-view");
-        grid=new SellerGrid();
+        grid = new SellerGrid();
         grid.addSelectionListener(new SelectionEvent.SelectionListener() {
 
             @Override
             public void select(SelectionEvent event) {
+//                grid.rowSelected(grid.getSelectedRow());
             }
         });
-        addComponent(createTopBar());
-        addComponent(grid);
-        addComponent(createFooter());
+
+        VerticalLayout barAndGridLayout = new VerticalLayout();
+        barAndGridLayout.addComponent(createTopBar());
+        barAndGridLayout.addComponent(grid);
+        barAndGridLayout.addComponent(createFooter());
+        barAndGridLayout.setMargin(true);
+        barAndGridLayout.setSpacing(true);
+        barAndGridLayout.setSizeFull();
+        barAndGridLayout.setExpandRatio(grid, 1);
+        barAndGridLayout.setStyleName("crud-main-layout");
+        addComponent(barAndGridLayout);
     }
 
     /**
      * top bar includes product's code
      */
     public HorizontalLayout createTopBar() {
+        FlowLayout flowLayout=new FlowLayout();
         productCode = new TextField();
         productCode.setStyleName("filter-textfield");
         productCode.setInputPrompt("Codigo Producto");
@@ -79,9 +93,9 @@ public class SellerView extends CssLayout implements View {
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setSpacing(true);
         topLayout.setWidth("100%");
-        topLayout.addComponent(productCode);
-        topLayout.addComponent(addProductBtn);
-        topLayout.setComponentAlignment(productCode, Alignment.MIDDLE_LEFT);
+        flowLayout.addComponent("1",productCode);
+        flowLayout.addComponent("2",addProductBtn);
+        
         topLayout.setComponentAlignment(addProductBtn, Alignment.MIDDLE_LEFT);
         topLayout.setStyleName("top-bar");
 
@@ -128,7 +142,7 @@ public class SellerView extends CssLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(">> entered");
     }
 
 }
