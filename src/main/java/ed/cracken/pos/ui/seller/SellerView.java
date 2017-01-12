@@ -6,6 +6,7 @@
 package ed.cracken.pos.ui.seller;
 
 import com.vaadin.event.FieldEvents;
+import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -39,8 +40,14 @@ public class SellerView extends CssLayout implements View {
         setSizeFull();
         addStyleName("crud-view");
         grid=new SellerGrid();
-        
+        grid.addSelectionListener(new SelectionEvent.SelectionListener() {
+
+            @Override
+            public void select(SelectionEvent event) {
+            }
+        });
         addComponent(createTopBar());
+        addComponent(grid);
         addComponent(createFooter());
     }
 

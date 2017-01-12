@@ -48,7 +48,7 @@ public class SellerGrid extends Grid {
 
     public void remove(ItemTo product) {
         getContainer().removeItem(product);
-    }
+    }   
 
     public void setItems(Collection<ItemTo> items) {
         getContainer().removeAllItems();
