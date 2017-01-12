@@ -67,6 +67,11 @@ public class SellerView extends CssLayout implements View {
     public void removeItem(ItemTo item){
         
     }
+    
+    private void refreshFooter(){
+        
+    }
+    
 
     /**
      *
