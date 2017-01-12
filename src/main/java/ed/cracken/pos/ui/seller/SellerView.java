@@ -9,12 +9,16 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
+import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import java.math.BigDecimal;
 
 /**
  *
@@ -27,17 +31,23 @@ public class SellerView extends CssLayout implements View {
     private SellerLogic sellerLogic;
     private Label total;
     private Label totalValue;
-    private Button finishTrx;
-    
+    private Button saveTrx;
+    private Button cancelTrx;
+    private SellerGrid grid;
+
     public SellerView() {
         setSizeFull();
         addStyleName("crud-view");
+        grid=new SellerGrid();
+        
+        addComponent(createTopBar());
+        addComponent(createFooter());
     }
 
     /**
      * top bar includes product's code
      */
-    public void createTopBar() {
+    public HorizontalLayout createTopBar() {
         productCode = new TextField();
         productCode.setStyleName("filter-textfield");
         productCode.setInputPrompt("Codigo Producto");
@@ -58,26 +68,55 @@ public class SellerView extends CssLayout implements View {
                 sellerLogic.findAndAddProduct(productCode.getValue());
             }
         });
+
+        HorizontalLayout topLayout = new HorizontalLayout();
+        topLayout.setSpacing(true);
+        topLayout.setWidth("100%");
+        topLayout.addComponent(productCode);
+        topLayout.addComponent(addProductBtn);
+        topLayout.setComponentAlignment(productCode, Alignment.MIDDLE_LEFT);
+        topLayout.setComponentAlignment(addProductBtn, Alignment.MIDDLE_LEFT);
+        topLayout.setStyleName("top-bar");
+
+        return topLayout;
+    }
+
+    public HorizontalLayout createFooter() {
+        total = new Label("Total:");
+        totalValue = new Label(DataFormatHelper.formatNumber(BigDecimal.ZERO));
+        saveTrx = new Button("Guardar");
+        cancelTrx = new Button("Cancelar");
+        HorizontalLayout bottomLayout = new HorizontalLayout();
+        bottomLayout.setSpacing(true);
+        bottomLayout.setWidth("100%");
+        bottomLayout.addComponent(total);
+        bottomLayout.addComponent(totalValue);
+        bottomLayout.setComponentAlignment(total, Alignment.MIDDLE_LEFT);
+        bottomLayout.setComponentAlignment(totalValue, Alignment.MIDDLE_LEFT);
+        bottomLayout.addComponent(saveTrx);
+        bottomLayout.addComponent(cancelTrx);
+        bottomLayout.setComponentAlignment(saveTrx, Alignment.MIDDLE_RIGHT);
+        bottomLayout.setComponentAlignment(cancelTrx, Alignment.MIDDLE_RIGHT);
+        return bottomLayout;
     }
 
     public void addItem(ItemTo item) {
-        
+
     }
-    
-    public void removeItem(ItemTo item){
-        
+
+    public void removeItem(ItemTo item) {
+
     }
-    
-    private void refreshFooter(){
-        
+
+    private void refreshFooter() {
+
     }
-    
 
     /**
      *
      */
     public void createFootBar() {
-        finishTrx=new Button("Grabar");
+        saveTrx = new Button("Grabar");
     }
 
     @Override

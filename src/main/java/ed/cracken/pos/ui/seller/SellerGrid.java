@@ -10,7 +10,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.Grid;
 import ed.cracken.pos.ui.seller.to.ItemTo;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import java.util.Collection;
 
 /**
  *
@@ -23,7 +23,7 @@ public class SellerGrid extends Grid {
         setSelectionMode(SelectionMode.SINGLE);
         setContainerDataSource(new BeanItemContainer<ItemTo>(
                 ItemTo.class));
-        
+
         setColumnOrder("productId", "description", "price", "quantity", "subtotal");
         getColumn("productId").setHeaderCaption("Codigo");
         getColumn("description").setHeaderCaption("Descripcion");
@@ -44,6 +44,20 @@ public class SellerGrid extends Grid {
 
     private BeanItemContainer<ItemTo> getContainer() {
         return (BeanItemContainer<ItemTo>) super.getContainerDataSource();
+    }
+
+    public void remove(ItemTo product) {
+        getContainer().removeItem(product);
+    }
+
+    public void setItems(Collection<ItemTo> items) {
+        getContainer().removeAllItems();
+        getContainer().addAll(items);
+    }
+
+    @Override
+    public ItemTo getSelectedRow() throws IllegalStateException {
+        return (ItemTo) super.getSelectedRow();
     }
 
 }
