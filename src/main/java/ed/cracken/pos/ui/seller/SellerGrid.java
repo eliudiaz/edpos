@@ -5,9 +5,12 @@
  */
 package ed.cracken.pos.ui.seller;
 
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.Grid;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import org.vaadin.mockapp.samples.backend.data.Product;
 
 /**
  *
@@ -16,15 +19,31 @@ import ed.cracken.pos.ui.seller.to.ItemTo;
 public class SellerGrid extends Grid {
 
     public SellerGrid() {
-        BeanItemContainer<ItemTo> container = new BeanItemContainer<ItemTo>(
-                ItemTo.class);
-        setContainerDataSource(container);
+        setSizeFull();
+        setSelectionMode(SelectionMode.SINGLE);
+        setContainerDataSource(new BeanItemContainer<ItemTo>(
+                ItemTo.class));
+        
         setColumnOrder("productId", "description", "price", "quantity", "subtotal");
         getColumn("productId").setHeaderCaption("Codigo");
         getColumn("description").setHeaderCaption("Descripcion");
         getColumn("price").setHeaderCaption("Precio U.");
         getColumn("quantity").setHeaderCaption("Cantidad");
         getColumn("subtotal").setHeaderCaption("Subtotal");
+    }
+
+    public void refresh(ItemTo pItem) {
+        BeanItem<ItemTo> item = getContainer().getItem(pItem);
+        if (item != null) {
+            MethodProperty p = (MethodProperty) item.getItemProperty("id");
+            p.fireValueChange();
+        } else {
+            getContainer().addBean(pItem);
+        }
+    }
+
+    private BeanItemContainer<ItemTo> getContainer() {
+        return (BeanItemContainer<ItemTo>) super.getContainerDataSource();
     }
 
 }

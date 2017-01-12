@@ -83,9 +83,9 @@ public class ProductForm extends CssLayout {
 
     }
 
-    public ProductForm(ProductCrudLogic sampleCrudLogic) {
+    public ProductForm(ProductCrudLogic crudLogic) {
         super();
-        viewLogic = sampleCrudLogic;
+        viewLogic = crudLogic;
         initComponents();
         price.setConverter(new EuroConverter());
 

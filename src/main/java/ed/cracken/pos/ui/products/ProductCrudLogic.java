@@ -5,6 +5,7 @@ import org.vaadin.mockapp.samples.backend.data.Product;
 
 import com.vaadin.server.Page;
 import ed.cracken.pos.ui.ApplicationUI;
+import static ed.cracken.pos.ui.helpers.NotificationsHelper.showSaveNotification;
 
 /**
  * This class provides an interface for the logical operations between the CRUD
@@ -77,7 +78,7 @@ public class ProductCrudLogic {
     }
 
     public void saveProduct(Product product) {
-        view.showSaveNotification(product.getProductName() + " ("
+        showSaveNotification(product.getProductName() + " ("
                 + product.getId() + ") updated");
         view.clearSelection();
         view.editProduct(null);
@@ -87,7 +88,7 @@ public class ProductCrudLogic {
 
     public void deleteProduct(Product product) {
         DataService.get().deleteProduct(product.getId());
-        view.showSaveNotification(product.getProductName() + " ("
+        showSaveNotification(product.getProductName() + " ("
                 + product.getId() + ") removed");
 
         view.clearSelection();

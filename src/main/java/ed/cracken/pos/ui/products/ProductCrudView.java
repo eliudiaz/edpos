@@ -18,8 +18,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid.SelectionModel;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -107,14 +105,6 @@ public class ProductCrudView extends CssLayout implements View {
     @Override
     public void enter(ViewChangeEvent event) {
         viewLogic.enter(event.getParameters());
-    }
-
-    public void showError(String msg) {
-        Notification.show(msg, Type.ERROR_MESSAGE);
-    }
-
-    public void showSaveNotification(String msg) {
-        Notification.show(msg, Type.TRAY_NOTIFICATION);
     }
 
     public void setNewProductEnabled(boolean enabled) {
