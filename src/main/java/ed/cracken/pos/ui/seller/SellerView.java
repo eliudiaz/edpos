@@ -13,6 +13,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -68,7 +69,7 @@ public class SellerView extends CssLayout implements View {
      * top bar includes product's code
      */
     public HorizontalLayout createTopBar() {
-        FlowLayout flowLayout=new FlowLayout();
+        FlowLayout flowLayout = new FlowLayout();
         productCode = new TextField();
         productCode.setStyleName("filter-textfield");
         productCode.setInputPrompt("Codigo Producto");
@@ -91,13 +92,11 @@ public class SellerView extends CssLayout implements View {
         });
 
         HorizontalLayout topLayout = new HorizontalLayout();
+        topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
         topLayout.setWidth("100%");
-        flowLayout.addComponent("1",productCode);
-        flowLayout.addComponent("2",addProductBtn);
-        
-        topLayout.setComponentAlignment(addProductBtn, Alignment.MIDDLE_LEFT);
-        topLayout.setStyleName("top-bar");
+        FormLayout fl = new FormLayout(productCode, addProductBtn);
+        topLayout.addComponent(fl);
 
         return topLayout;
     }
