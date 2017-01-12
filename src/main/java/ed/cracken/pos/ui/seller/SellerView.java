@@ -13,7 +13,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -21,7 +20,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.seller.to.ItemTo;
-import java.awt.FlowLayout;
 import java.math.BigDecimal;
 
 /**
@@ -69,7 +67,6 @@ public class SellerView extends CssLayout implements View {
      * top bar includes product's code
      */
     public HorizontalLayout createTopBar() {
-        FlowLayout flowLayout = new FlowLayout();
         productCode = new TextField();
         productCode.setStyleName("filter-textfield");
         productCode.setInputPrompt("Codigo Producto");
@@ -91,12 +88,10 @@ public class SellerView extends CssLayout implements View {
             }
         });
 
-        HorizontalLayout topLayout = new HorizontalLayout();
+        HorizontalLayout topLayout = new HorizontalLayout(productCode, addProductBtn);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
-        topLayout.setWidth("100%");
-        FormLayout fl = new FormLayout(productCode, addProductBtn);
-        topLayout.addComponent(fl);
+//        topLayout.setWidth("100%");
 
         return topLayout;
     }
@@ -108,7 +103,6 @@ public class SellerView extends CssLayout implements View {
         cancelTrx = new Button("Cancelar");
         HorizontalLayout bottomLayout = new HorizontalLayout();
         bottomLayout.setSpacing(true);
-        bottomLayout.setWidth("100%");
         bottomLayout.addComponent(total);
         bottomLayout.addComponent(totalValue);
         bottomLayout.setComponentAlignment(total, Alignment.MIDDLE_LEFT);
