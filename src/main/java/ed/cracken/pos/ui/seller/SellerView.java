@@ -79,6 +79,7 @@ public class SellerView extends CssLayout implements View {
         });
 
         addProductBtn = new Button("Buscar");
+        addProductBtn.setIcon(FontAwesome.SEARCH);
         addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
         addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
         addProductBtn.addClickListener(new Button.ClickListener() {
@@ -98,9 +99,10 @@ public class SellerView extends CssLayout implements View {
 
     public HorizontalLayout createFooter() {
         total = new Label("Total:");
+        
         totalValue = new Label(DataFormatHelper.formatNumber(BigDecimal.ZERO));
-        saveTrx = new Button("Guardar");
-        cancelTrx = new Button("Cancelar");
+        saveTrx = new Button("Guardar",FontAwesome.CHECK_CIRCLE_O);
+        cancelTrx = new Button("Cancelar",FontAwesome.C);
         HorizontalLayout bottomLayout = new HorizontalLayout();
         bottomLayout.setSpacing(true);
         bottomLayout.addComponent(total);
