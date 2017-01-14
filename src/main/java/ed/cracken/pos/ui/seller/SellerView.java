@@ -10,6 +10,7 @@ import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
@@ -35,6 +36,8 @@ public class SellerView extends CssLayout implements View {
     private SellerLogic sellerLogic;
     private Label total;
     private Label totalValue;
+    private Label quantity;
+    private Label quantityValue;
     private Button saveTrx;
     private Button cancelTrx;
     private SellerGrid grid;
@@ -52,15 +55,18 @@ public class SellerView extends CssLayout implements View {
         });
 
         VerticalLayout barAndGridLayout = new VerticalLayout();
+        HorizontalLayout foot;
         barAndGridLayout.addComponent(createTopBar());
         barAndGridLayout.addComponent(grid);
-        barAndGridLayout.addComponent(createFooter());
+        barAndGridLayout.addComponent(foot = createFooter());
         barAndGridLayout.setMargin(true);
         barAndGridLayout.setSpacing(true);
         barAndGridLayout.setSizeFull();
         barAndGridLayout.setExpandRatio(grid, 1);
         barAndGridLayout.setStyleName("crud-main-layout");
+        barAndGridLayout.setComponentAlignment(foot, Alignment.TOP_CENTER);
         addComponent(barAndGridLayout);
+
     }
 
     /**
@@ -98,22 +104,50 @@ public class SellerView extends CssLayout implements View {
     }
 
     public HorizontalLayout createFooter() {
-        total = new Label("Total:");
-        
-        totalValue = new Label(DataFormatHelper.formatNumber(BigDecimal.ZERO));
-        saveTrx = new Button("Guardar",FontAwesome.CHECK_CIRCLE_O);
-        cancelTrx = new Button("Cancelar",FontAwesome.C);
-        HorizontalLayout bottomLayout = new HorizontalLayout();
-        bottomLayout.setSpacing(true);
-        bottomLayout.addComponent(total);
-        bottomLayout.addComponent(totalValue);
-        bottomLayout.setComponentAlignment(total, Alignment.MIDDLE_LEFT);
-        bottomLayout.setComponentAlignment(totalValue, Alignment.MIDDLE_LEFT);
-        bottomLayout.addComponent(saveTrx);
-        bottomLayout.addComponent(cancelTrx);
-        bottomLayout.setComponentAlignment(saveTrx, Alignment.MIDDLE_RIGHT);
-        bottomLayout.setComponentAlignment(cancelTrx, Alignment.MIDDLE_RIGHT);
-        return bottomLayout;
+        total = new Label("<h2><strong>Total:</strong></h2>");
+        total.setContentMode(ContentMode.HTML);
+        totalValue = new Label("<h2><strong>" + DataFormatHelper.formatNumber(BigDecimal.ZERO) + "</strong></h2>");
+        totalValue.setContentMode(ContentMode.HTML);
+
+        quantity = new Label("<h2><strong>Cantidad:</strong></h2>");
+        quantity.setContentMode(ContentMode.HTML);
+        quantityValue = new Label("<h2><strong>" + DataFormatHelper.formatNumber(BigDecimal.ZERO) + "</strong></h2>");
+        quantityValue.setContentMode(ContentMode.HTML);
+
+        saveTrx = new Button("Guardar", FontAwesome.CHECK_CIRCLE_O);
+        saveTrx.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        saveTrx.setHeight("60px");
+        cancelTrx = new Button("Cancelar", FontAwesome.CLOSE);
+        cancelTrx.addStyleName(ValoTheme.BUTTON_DANGER);
+        cancelTrx.setHeight("60px");
+        HorizontalLayout bottom = new HorizontalLayout();
+        HorizontalLayout labelsArea = new HorizontalLayout();
+        HorizontalLayout buttonsArea = new HorizontalLayout();
+
+        labelsArea.setSpacing(true);
+        labelsArea.addComponent(total);
+        labelsArea.addComponent(totalValue);
+        labelsArea.addComponent(quantity);
+        labelsArea.addComponent(quantityValue);
+
+        labelsArea.setComponentAlignment(total, Alignment.MIDDLE_LEFT);
+        labelsArea.setComponentAlignment(totalValue, Alignment.MIDDLE_LEFT);
+        labelsArea.setComponentAlignment(quantity, Alignment.MIDDLE_RIGHT);
+        labelsArea.setComponentAlignment(quantityValue, Alignment.MIDDLE_RIGHT);
+
+        buttonsArea.setSpacing(true);
+        buttonsArea.addComponent(saveTrx);
+        buttonsArea.addComponent(cancelTrx);
+//        buttonsArea.setComponentAlignment(saveTrx, Alignment.MIDDLE_LEFT);
+//        buttonsArea.setComponentAlignment(cancelTrx, Alignment.MIDDLE_LEFT);
+        bottom.setSpacing(true);
+        bottom.addComponent(buttonsArea);
+        bottom.addComponent(labelsArea);
+        bottom.setComponentAlignment(buttonsArea, Alignment.MIDDLE_LEFT);
+        bottom.setComponentAlignment(labelsArea, Alignment.MIDDLE_RIGHT);
+        bottom.setWidth("100%");
+
+        return bottom;
     }
 
     public void addItem(ItemTo item) {

@@ -24,12 +24,14 @@ public class SellerGrid extends Grid {
         setContainerDataSource(new BeanItemContainer<ItemTo>(
                 ItemTo.class));
 
-        setColumnOrder("productId", "description", "price", "quantity", "subtotal");
+        setColumnOrder("productId", "description", "price", "quantity","discount", "subtotal");
         getColumn("productId").setHeaderCaption("Codigo");
         getColumn("description").setHeaderCaption("Descripcion");
         getColumn("price").setHeaderCaption("Precio U.");
         getColumn("quantity").setHeaderCaption("Cantidad");
         getColumn("subtotal").setHeaderCaption("Subtotal");
+        getColumn("discount").setHeaderCaption("Descuento");
+        getColumn("product").setHidden(true);
     }
 
     public void refresh(ItemTo pItem) {
