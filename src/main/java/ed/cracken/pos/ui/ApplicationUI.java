@@ -27,12 +27,6 @@ public class ApplicationUI extends UI {
 
     private AccessControl accessControl = new BasicAccessControl();
 
-//    @Override
-//    protected void init(VaadinRequest request) {
-//        VerticalLayout view = new VerticalLayout();
-//        view.addComponent(new Label("Hello Vaadin!"));
-//        setContent(view);
-//    }
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         Responsive.makeResponsive(this);
