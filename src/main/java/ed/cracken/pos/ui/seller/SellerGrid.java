@@ -10,13 +10,16 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.Grid;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.seller.to.SellSummaryTo;
+import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
-public class SellerGrid extends Grid {
+public final class SellerGrid extends Grid {
+
 
     public SellerGrid() {
         setSizeFull();
@@ -24,7 +27,7 @@ public class SellerGrid extends Grid {
         setContainerDataSource(new BeanItemContainer<ItemTo>(
                 ItemTo.class));
 
-        setColumnOrder("productId", "description", "price", "quantity","discount", "subtotal");
+        setColumnOrder("productId", "description", "price", "quantity", "discount", "subtotal");
         getColumn("productId").setHeaderCaption("Codigo");
         getColumn("description").setHeaderCaption("Descripcion");
         getColumn("price").setHeaderCaption("Precio U.");
@@ -32,6 +35,7 @@ public class SellerGrid extends Grid {
         getColumn("subtotal").setHeaderCaption("Subtotal");
         getColumn("discount").setHeaderCaption("Descuento");
         getColumn("product").setHidden(true);
+        
     }
 
     public void refresh(ItemTo pItem) {
@@ -48,9 +52,14 @@ public class SellerGrid extends Grid {
         return (BeanItemContainer<ItemTo>) super.getContainerDataSource();
     }
 
+    public void add(ItemTo item) {
+        item.setProductId(item.getProduct().getId().toString());
+        getContainer().addBean(item);
+    }
+
     public void remove(ItemTo product) {
         getContainer().removeItem(product);
-    }   
+    }
 
     public void setItems(Collection<ItemTo> items) {
         getContainer().removeAllItems();

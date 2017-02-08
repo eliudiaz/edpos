@@ -36,6 +36,9 @@ public class SellerLogic {
                 .description(product.getProductName())
                 .price(product.getPrice())
                 .quantity(BigDecimal.ONE)
+                .product(product)
+                .discount(BigDecimal.ZERO)
+                .subtotal(product.getPrice().multiply(BigDecimal.ONE))
                 .build();
         view.addItem(item);
         items.add(item);

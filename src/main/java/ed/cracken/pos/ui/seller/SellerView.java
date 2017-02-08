@@ -21,6 +21,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.seller.to.SellSummaryTo;
 import java.math.BigDecimal;
 
 /**
@@ -33,25 +34,25 @@ public class SellerView extends CssLayout implements View {
 
     private Button addProductBtn;
     private TextField productCode;
-    private SellerLogic sellerLogic;
+
     private Label total;
     private Label totalValue;
     private Label quantity;
     private Label quantityValue;
     private Button saveTrx;
     private Button cancelTrx;
-    private SellerGrid grid;
+    private final SellerGrid grid;
+    private final SellerLogic sellerLogic;
+    private final SellSummaryTo summary;
 
     public SellerView() {
+        summary = SellSummaryTo.builder().count(BigDecimal.ZERO).total(BigDecimal.ZERO).build();
         setSizeFull();
         addStyleName("crud-view");
+        sellerLogic = new SellerLogic(this);
         grid = new SellerGrid();
-        grid.addSelectionListener(new SelectionEvent.SelectionListener() {
-
-            @Override
-            public void select(SelectionEvent event) {
+        grid.addSelectionListener((SelectionEvent event) -> {
 //                grid.rowSelected(grid.getSelectedRow());
-            }
         });
 
         VerticalLayout barAndGridLayout = new VerticalLayout();
@@ -71,7 +72,8 @@ public class SellerView extends CssLayout implements View {
 
     /**
      * top bar includes product's code
-     * @return 
+     *
+     * @return
      */
     public HorizontalLayout createTopBar() {
         productCode = new TextField();
@@ -79,7 +81,9 @@ public class SellerView extends CssLayout implements View {
         productCode.setInputPrompt("Codigo Producto");
         productCode.setImmediate(true);
         productCode.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
-            sellerLogic.findAndAddProduct(event.getText());
+            if (!event.getText().isEmpty()) {
+                sellerLogic.findAndAddProduct(event.getText());
+            }
         });
 
         addProductBtn = new Button("Buscar");
@@ -87,13 +91,21 @@ public class SellerView extends CssLayout implements View {
         addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
         addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
         addProductBtn.addClickListener((Button.ClickEvent event) -> {
-            sellerLogic.findAndAddProduct(productCode.getValue());
+            if (!productCode.getValue().isEmpty()) {
+                sellerLogic.findAndAddProduct(productCode.getValue());
+            }
         });
 
         HorizontalLayout topLayout = new HorizontalLayout(productCode, addProductBtn);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
         return topLayout;
+    }
+
+    private void refreshInternal() {
+        
+        totalValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getTotal()) + "</strong></h2>");
+        quantityValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getCount()) + "</strong></h2>");
     }
 
     public HorizontalLayout createFooter() {
@@ -142,7 +154,10 @@ public class SellerView extends CssLayout implements View {
     }
 
     public void addItem(ItemTo item) {
-
+        grid.add(item);
+        summary.setCount(summary.getCount().add(item.getQuantity()));
+        summary.setTotal(summary.getTotal().add(item.getSubtotal()));
+        refreshInternal();
     }
 
     public void removeItem(ItemTo item) {

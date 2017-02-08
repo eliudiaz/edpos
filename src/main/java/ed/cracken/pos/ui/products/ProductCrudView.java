@@ -26,7 +26,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * See also {@link ProductCrudLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
-public class ProductCrudView extends CssLayout implements View {
+public final class ProductCrudView extends CssLayout implements View {
 
     public static final String VIEW_NAME = "Inventario Productos";
     private final ProductGrid grid;
