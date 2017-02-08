@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class Product implements Serializable {
 
     @NotNull
-    private int id = -1;
+    private Integer id = -1;
     @NotNull
     @Size(min = 2, message = "Product name must have at least two characters")
     private String productName = "";
@@ -23,11 +23,11 @@ public class Product implements Serializable {
     @NotNull
     private Availability availability = Availability.COMING;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

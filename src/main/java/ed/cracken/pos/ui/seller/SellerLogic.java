@@ -5,16 +5,22 @@
  */
 package ed.cracken.pos.ui.seller;
 
+import ed.cracken.pos.exception.ProductNotFoundException;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
+import org.vaadin.mockapp.samples.backend.DataService;
 import org.vaadin.mockapp.samples.backend.data.Product;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 public class SellerLogic {
 
-    private SellerView view;
+    private final SellerView view;
+    private final List<ItemTo> items = new LinkedList<>();
 
     public SellerLogic(SellerView view) {
         this.view = view;
@@ -26,7 +32,13 @@ public class SellerLogic {
      * @param product
      */
     public void addItem(Product product) {
-        view.addItem(null);
+        ItemTo item = ItemTo.builder()
+                .description(product.getProductName())
+                .price(product.getPrice())
+                .quantity(BigDecimal.ONE)
+                .build();
+        view.addItem(item);
+        items.add(item);
     }
 
     /**
@@ -39,10 +51,15 @@ public class SellerLogic {
     }
 
     public void findAndAddProduct(String code) {
+        addItem(findProduct(code));
     }
 
     private Product findProduct(String code) {
-        return null;
+        return DataService.get().getAllProducts()
+                .stream()
+                .filter(p -> p.getId().equals(Integer.valueOf(code)))
+                .findFirst()
+                .orElseThrow(ProductNotFoundException::new);
     }
 
 }

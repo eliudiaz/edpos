@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 public class SellerView extends CssLayout implements View {
 
@@ -71,35 +71,28 @@ public class SellerView extends CssLayout implements View {
 
     /**
      * top bar includes product's code
+     * @return 
      */
     public HorizontalLayout createTopBar() {
         productCode = new TextField();
         productCode.setStyleName("filter-textfield");
         productCode.setInputPrompt("Codigo Producto");
         productCode.setImmediate(true);
-        productCode.addTextChangeListener(new FieldEvents.TextChangeListener() {
-            @Override
-            public void textChange(FieldEvents.TextChangeEvent event) {
-                sellerLogic.findAndAddProduct(event.getText());
-            }
+        productCode.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            sellerLogic.findAndAddProduct(event.getText());
         });
 
         addProductBtn = new Button("Buscar");
         addProductBtn.setIcon(FontAwesome.SEARCH);
         addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
         addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
-        addProductBtn.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                sellerLogic.findAndAddProduct(productCode.getValue());
-            }
+        addProductBtn.addClickListener((Button.ClickEvent event) -> {
+            sellerLogic.findAndAddProduct(productCode.getValue());
         });
 
         HorizontalLayout topLayout = new HorizontalLayout(productCode, addProductBtn);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
-//        topLayout.setWidth("100%");
-
         return topLayout;
     }
 
@@ -138,8 +131,6 @@ public class SellerView extends CssLayout implements View {
         buttonsArea.setSpacing(true);
         buttonsArea.addComponent(saveTrx);
         buttonsArea.addComponent(cancelTrx);
-//        buttonsArea.setComponentAlignment(saveTrx, Alignment.MIDDLE_LEFT);
-//        buttonsArea.setComponentAlignment(cancelTrx, Alignment.MIDDLE_LEFT);
         bottom.setSpacing(true);
         bottom.addComponent(buttonsArea);
         bottom.addComponent(labelsArea);

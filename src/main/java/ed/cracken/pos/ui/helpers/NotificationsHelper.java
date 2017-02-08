@@ -9,7 +9,7 @@ import com.vaadin.ui.Notification;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 public final class NotificationsHelper {
 

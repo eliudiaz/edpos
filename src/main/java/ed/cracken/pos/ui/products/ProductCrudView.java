@@ -7,14 +7,12 @@ import org.vaadin.mockapp.samples.backend.DataService;
 import org.vaadin.mockapp.samples.backend.data.Product;
 
 import com.vaadin.event.SelectionEvent;
-import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid.SelectionModel;
 import com.vaadin.ui.HorizontalLayout;
@@ -43,12 +41,8 @@ public class ProductCrudView extends CssLayout implements View {
         HorizontalLayout topLayout = createTopBar();
 
         grid = new ProductGrid();
-        grid.addSelectionListener(new SelectionListener() {
-
-            @Override
-            public void select(SelectionEvent event) {
-                viewLogic.rowSelected(grid.getSelectedRow());
-            }
+        grid.addSelectionListener((SelectionEvent event) -> {
+            viewLogic.rowSelected(grid.getSelectedRow());
         });
 
         form = new ProductForm(viewLogic);
@@ -74,21 +68,15 @@ public class ProductCrudView extends CssLayout implements View {
         filter.setStyleName("filter-textfield");
         filter.setInputPrompt("Filter");
         filter.setImmediate(true);
-        filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
-            @Override
-            public void textChange(FieldEvents.TextChangeEvent event) {
-                grid.setFilter(event.getText());
-            }
+        filter.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            grid.setFilter(event.getText());
         });
 
         newProduct = new Button("New product");
         newProduct.addStyleName(ValoTheme.BUTTON_PRIMARY);
         newProduct.setIcon(FontAwesome.PLUS_CIRCLE);
-        newProduct.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                viewLogic.newProduct();
-            }
+        newProduct.addClickListener((ClickEvent event) -> {
+            viewLogic.newProduct();
         });
 
         HorizontalLayout topLayout = new HorizontalLayout();
