@@ -17,6 +17,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
@@ -44,12 +45,14 @@ public class SellerView extends CssLayout implements View {
     private final SellerGrid grid;
     private final SellerLogic sellerLogic;
     private final SellSummaryTo summary;
+    private final SellerPaymentView paymentView;
 
     public SellerView() {
         summary = SellSummaryTo.builder().count(BigDecimal.ZERO).total(BigDecimal.ZERO).build();
         setSizeFull();
         addStyleName("crud-view");
         sellerLogic = new SellerLogic(this);
+        paymentView = new SellerPaymentView();
         grid = new SellerGrid();
         grid.addSelectionListener((SelectionEvent event) -> {
 //                grid.rowSelected(grid.getSelectedRow());
@@ -103,7 +106,7 @@ public class SellerView extends CssLayout implements View {
     }
 
     private void refreshInternal() {
-        
+
         totalValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getTotal()) + "</strong></h2>");
         quantityValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getCount()) + "</strong></h2>");
     }
@@ -122,6 +125,9 @@ public class SellerView extends CssLayout implements View {
         saveTrx = new Button("Guardar", FontAwesome.CHECK_CIRCLE_O);
         saveTrx.addStyleName(ValoTheme.BUTTON_PRIMARY);
         saveTrx.setHeight("60px");
+        saveTrx.addClickListener((Button.ClickEvent event) -> {
+            UI.getCurrent().addWindow(paymentView);                    
+        });
         cancelTrx = new Button("Cancelar", FontAwesome.CLOSE);
         cancelTrx.addStyleName(ValoTheme.BUTTON_DANGER);
         cancelTrx.setHeight("60px");
