@@ -26,6 +26,10 @@ public class SellerLogic {
         this.view = view;
     }
 
+    public void editItem(ItemTo item) {
+        view.editItem(item);
+    }
+
     /**
      * affects grid & footer
      *

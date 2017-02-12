@@ -6,6 +6,7 @@
 package ed.cracken.pos.ui.seller.to;
 
 import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import org.vaadin.mockapp.samples.backend.data.Product;
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
 public class ItemTo {
 
     private String productId;
@@ -27,4 +29,8 @@ public class ItemTo {
     private BigDecimal subtotal;
     private BigDecimal discount;
     private Product product;
+
+    public ItemTo() {
+    }
+
 }

@@ -30,7 +30,7 @@ import org.vaadin.mockapp.samples.backend.data.Product;
  *
  * @author edcracken
  */
-public class ProductForm extends CssLayout {
+public final class ProductForm extends CssLayout {
 
     protected TextField productName;
     protected TextField price;
@@ -93,19 +93,16 @@ public class ProductForm extends CssLayout {
             availability.addItem(s);
         }
 
-        fieldGroup = new BeanFieldGroup<Product>(Product.class);
+        fieldGroup = new BeanFieldGroup<>(Product.class);
         fieldGroup.bindMemberFields(this);
 
         // perform validation and enable/disable buttons while editing
-        Property.ValueChangeListener valueListener = new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                formHasChanged();
-            }
+        Property.ValueChangeListener valueListener = (Property.ValueChangeEvent event) -> {
+            formHasChanged();
         };
-        for (Field f : fieldGroup.getFields()) {
+        fieldGroup.getFields().stream().forEach((f) -> {
             f.addValueChangeListener(valueListener);
-        }
+        });
 
         fieldGroup.addCommitHandler(new FieldGroup.CommitHandler() {
 

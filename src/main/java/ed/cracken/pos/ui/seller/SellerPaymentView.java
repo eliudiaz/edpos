@@ -46,17 +46,21 @@ public final class SellerPaymentView extends Window {
         setClosable(false);
         setModal(true);
 
+        HorizontalLayout lyButtons = new HorizontalLayout();
         Button ok = new Button("Aceptar");
         ok.addClickListener((ClickEvent event) -> {
             close();
         });
-        content.addComponent(ok);
+        lyButtons.addComponent(ok);
 
         Button ko = new Button("Cancelar");
         ok.addClickListener((ClickEvent event) -> {
             close();
         });
-        content.addComponent(ko);
+        lyButtons.addComponent(ko);
+        lyButtons.setSpacing(true);
+        content.addComponent(lyButtons);
+
     }
 
 }

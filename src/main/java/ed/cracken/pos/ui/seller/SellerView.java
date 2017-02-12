@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  *
  * @author edcracken
  */
-public class SellerView extends CssLayout implements View {
+public final class SellerView extends CssLayout implements View {
 
     public static final String VIEW_NAME = "Ventas";
 
@@ -43,19 +43,21 @@ public class SellerView extends CssLayout implements View {
     private Button saveTrx;
     private Button cancelTrx;
     private final SellerGrid grid;
-    private final SellerLogic sellerLogic;
+    private final SellerLogic viewLogic;
     private final SellSummaryTo summary;
     private final SellerPaymentView paymentView;
+    private final SellItemForm sellItemForm;
 
     public SellerView() {
+
         summary = SellSummaryTo.builder().count(BigDecimal.ZERO).total(BigDecimal.ZERO).build();
         setSizeFull();
         addStyleName("crud-view");
-        sellerLogic = new SellerLogic(this);
+        viewLogic = new SellerLogic(this);
         paymentView = new SellerPaymentView();
         grid = new SellerGrid();
         grid.addSelectionListener((SelectionEvent event) -> {
-//                grid.rowSelected(grid.getSelectedRow());
+            viewLogic.editItem(grid.getSelectedRow());
         });
 
         VerticalLayout barAndGridLayout = new VerticalLayout();
@@ -70,7 +72,18 @@ public class SellerView extends CssLayout implements View {
         barAndGridLayout.setStyleName("crud-main-layout");
         barAndGridLayout.setComponentAlignment(foot, Alignment.TOP_CENTER);
         addComponent(barAndGridLayout);
+        addComponent(sellItemForm = new SellItemForm());
+    }
 
+    public void editItem(ItemTo item) {
+        if (item != null) {
+            sellItemForm.addStyleName("visible");
+            sellItemForm.setEnabled(true);
+        } else {
+            sellItemForm.removeStyleName("visible");
+            sellItemForm.setEnabled(false);
+        }
+        sellItemForm.editItem(item);
     }
 
     /**
@@ -85,7 +98,7 @@ public class SellerView extends CssLayout implements View {
         productCode.setImmediate(true);
         productCode.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
-                sellerLogic.findAndAddProduct(event.getText());
+                viewLogic.findAndAddProduct(event.getText());
             }
         });
 
@@ -95,7 +108,7 @@ public class SellerView extends CssLayout implements View {
         addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
         addProductBtn.addClickListener((Button.ClickEvent event) -> {
             if (!productCode.getValue().isEmpty()) {
-                sellerLogic.findAndAddProduct(productCode.getValue());
+                viewLogic.findAndAddProduct(productCode.getValue());
             }
         });
 
@@ -126,7 +139,7 @@ public class SellerView extends CssLayout implements View {
         saveTrx.addStyleName(ValoTheme.BUTTON_PRIMARY);
         saveTrx.setHeight("60px");
         saveTrx.addClickListener((Button.ClickEvent event) -> {
-            UI.getCurrent().addWindow(paymentView);                    
+            UI.getCurrent().addWindow(paymentView);
         });
         cancelTrx = new Button("Cancelar", FontAwesome.CLOSE);
         cancelTrx.addStyleName(ValoTheme.BUTTON_DANGER);
