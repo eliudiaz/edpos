@@ -9,6 +9,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
@@ -16,6 +17,11 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.vaadin.mockapp.samples.backend.data.Product;
 
 /**
@@ -54,6 +60,25 @@ public final class SellItemForm extends CssLayout {
         formLayout.addComponent(quantity = new TextField("Quantity"));
         formLayout.addComponent(discount = new TextField("Discount"));
         formLayout.addComponent(subtotal = new TextField("Subtotal"));
+
+        quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            if (!event.getText().isEmpty()) {
+                try {
+                    ItemTo item;
+                    BigDecimal r = BigDecimal
+                            .valueOf(DecimalFormat
+                                    .getNumberInstance()
+                                    .parse(event.getText()).longValue())
+                            .multiply((item = fieldGroup.getItemDataSource().getBean())
+                                    .getPrice());
+                    subtotal.setReadOnly(false);
+                    subtotal.setValue(DecimalFormat.getInstance().format(r.longValue()));
+                    subtotal.setReadOnly(true);
+                } catch (ParseException ex) {
+                    Logger.getLogger(SellItemForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
 
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");

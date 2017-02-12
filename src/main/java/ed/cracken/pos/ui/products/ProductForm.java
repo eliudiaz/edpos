@@ -118,37 +118,28 @@ public final class ProductForm extends CssLayout {
             }
         });
 
-        save.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    fieldGroup.commit();
+        save.addClickListener((Button.ClickEvent event) -> {
+            try {
+                fieldGroup.commit();
 
-                    // only if validation succeeds
-                    Product product = fieldGroup.getItemDataSource().getBean();
-                    viewLogic.saveProduct(product);
-                } catch (FieldGroup.CommitException e) {
-                    Notification n = new Notification(
-                            "Please re-check the fields", Notification.Type.ERROR_MESSAGE);
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-                }
-            }
-        });
-
-        cancel.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                viewLogic.cancelProduct();
-            }
-        });
-
-        delete.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
+                // only if validation succeeds
                 Product product = fieldGroup.getItemDataSource().getBean();
-                viewLogic.deleteProduct(product);
+                viewLogic.saveProduct(product);
+            } catch (FieldGroup.CommitException e) {
+                Notification n = new Notification(
+                        "Please re-check the fields", Notification.Type.ERROR_MESSAGE);
+                n.setDelayMsec(500);
+                n.show(getUI().getPage());
             }
+        });
+
+        cancel.addClickListener((Button.ClickEvent event) -> {
+            viewLogic.cancelProduct();
+        });
+
+        delete.addClickListener((Button.ClickEvent event) -> {
+            Product product = fieldGroup.getItemDataSource().getBean();
+            viewLogic.deleteProduct(product);
         });
     }
 
