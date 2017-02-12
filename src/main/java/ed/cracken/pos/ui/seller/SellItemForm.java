@@ -55,10 +55,6 @@ public final class SellItemForm extends CssLayout {
         formLayout.addComponent(discount = new TextField("Discount"));
         formLayout.addComponent(subtotal = new TextField("Subtotal"));
 
-        price.setReadOnly(true);
-        discount.setReadOnly(true);
-        subtotal.setReadOnly(true);
-
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");
         formLayout.addComponent(separator);
@@ -95,6 +91,12 @@ public final class SellItemForm extends CssLayout {
         price.setValidationVisible(false);
         discount.setValidationVisible(false);
         subtotal.setValidationVisible(false);
+
+        productId.setReadOnly(true);
+        description.setReadOnly(true);
+        price.setReadOnly(true);
+        discount.setReadOnly(true);
+        subtotal.setReadOnly(true);
 
         String scrollScript = "window.document.getElementById('" + getId()
                 + "').scrollTop = 0;";
