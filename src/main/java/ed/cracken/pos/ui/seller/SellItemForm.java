@@ -16,7 +16,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import ed.cracken.pos.ui.converters.CurrencyConverter;
+import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -57,12 +57,10 @@ public final class SellItemForm extends CssLayout {
         formLayout.setStyleName("form-layout");
         formLayout.addComponent(productId = new TextField("Code"));
         formLayout.addComponent(description = new TextField("Description"));
-        formLayout.addComponent(price = new TextField("Price"));
-        formLayout.addComponent(quantity = new TextField("Quantity"));
-        formLayout.addComponent(discount = new TextField("Discount"));
-        formLayout.addComponent(subtotal = new TextField("Subtotal"));
-        quantity.setConverter(new CurrencyConverter());
-        subtotal.setConverter(new CurrencyConverter());
+        formLayout.addComponent(price = new DecimalNumberField("Price"));
+        formLayout.addComponent(quantity = new DecimalNumberField("Quantity"));
+        formLayout.addComponent(discount = new DecimalNumberField("Discount"));
+        formLayout.addComponent(subtotal = new DecimalNumberField("Subtotal"));
         price.setConverter(BigDecimal.class);
         quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
