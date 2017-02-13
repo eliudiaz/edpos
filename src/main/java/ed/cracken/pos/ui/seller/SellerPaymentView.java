@@ -9,9 +9,9 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import ed.cracken.pos.ui.components.DecimalNumberField;
 
 /**
  *
@@ -19,8 +19,8 @@ import com.vaadin.ui.Window;
  */
 public final class SellerPaymentView extends Window {
 
-    private final TextField txtCash;
-    private final TextField txtCard;
+    private final DecimalNumberField txtCash;
+    private final DecimalNumberField txtCard;
 
     public SellerPaymentView() {
         super("Forma de pago"); // Set window caption
@@ -36,10 +36,10 @@ public final class SellerPaymentView extends Window {
 
         lyCash.addComponent(new Label("Efectivo: "));
         lyCash.setSpacing(true);
-        lyCash.addComponent(txtCash = new TextField());
+        lyCash.addComponent(txtCash = new DecimalNumberField());
 
         lyCard.addComponent(new Label("Tarjeta: "));
-        lyCard.addComponent(txtCard = new TextField());
+        lyCard.addComponent(txtCard = new DecimalNumberField());
         lyCard.setSpacing(true);
 
         setContent(content);
