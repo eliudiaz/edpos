@@ -16,13 +16,14 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import ed.cracken.pos.ui.converters.CurrencyConverter;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.vaadin.mockapp.samples.backend.data.Product;
 
 /**
  *
@@ -60,19 +61,24 @@ public final class SellItemForm extends CssLayout {
         formLayout.addComponent(quantity = new TextField("Quantity"));
         formLayout.addComponent(discount = new TextField("Discount"));
         formLayout.addComponent(subtotal = new TextField("Subtotal"));
-
+        quantity.setConverter(new CurrencyConverter());
+        subtotal.setConverter(new CurrencyConverter());
+        price.setConverter(BigDecimal.class);
         quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
                 try {
+                    NumberFormat nf = DecimalFormat.getInstance();
+                    nf.setMaximumFractionDigits(2);
+
                     ItemTo item;
                     BigDecimal r = BigDecimal
-                            .valueOf(DecimalFormat
-                                    .getNumberInstance()
+                            .valueOf(nf
                                     .parse(event.getText()).longValue())
                             .multiply((item = fieldGroup.getItemDataSource().getBean())
                                     .getPrice());
                     subtotal.setReadOnly(false);
-                    subtotal.setValue(DecimalFormat.getInstance().format(r.longValue()));
+
+                    subtotal.setValue(nf.format(r.doubleValue()));
                     subtotal.setReadOnly(true);
                 } catch (ParseException ex) {
                     Logger.getLogger(SellItemForm.class.getName()).log(Level.SEVERE, null, ex);
