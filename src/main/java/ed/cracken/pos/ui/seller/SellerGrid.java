@@ -10,8 +10,6 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.Grid;
 import ed.cracken.pos.ui.seller.to.ItemTo;
-import ed.cracken.pos.ui.seller.to.SellSummaryTo;
-import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
@@ -41,7 +39,7 @@ public final class SellerGrid extends Grid {
     public void refresh(ItemTo pItem) {
         BeanItem<ItemTo> item = getContainer().getItem(pItem);
         if (item != null) {
-            MethodProperty p = (MethodProperty) item.getItemProperty("id");
+            MethodProperty p = (MethodProperty) item.getItemProperty("productId");
             p.fireValueChange();
         } else {
             getContainer().addBean(pItem);

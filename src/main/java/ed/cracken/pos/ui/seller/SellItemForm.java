@@ -17,6 +17,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
+import ed.cracken.pos.ui.components.StyledButton;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -46,7 +47,7 @@ public final class SellItemForm extends CssLayout {
 
     private BeanFieldGroup<ItemTo> fieldGroup;
 
-    public SellItemForm() {
+    public SellItemForm(SellerLogic viewLogic) {
 
         setId("product-form");
         setStyleName("product-form-wrapper");
@@ -87,24 +88,24 @@ public final class SellItemForm extends CssLayout {
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");
         formLayout.addComponent(separator);
-        formLayout.addComponent(save = new Button("Aplicar") {
-            {
-                setStyleName("primary");
-                setId("save");
+        formLayout.addComponent(save = new StyledButton("Aplicar", "primary", "save"));
+        formLayout.addComponent(cancel = new StyledButton("Cancelar", "cancel", "cancel"));
+        formLayout.addComponent(delete = new StyledButton("Quitar", "danger", "delete"));
+        save.addClickListener((Button.ClickEvent event) -> {
+            try {
+                fieldGroup.commit();
+                viewLogic.updateItem(fieldGroup.getItemDataSource().getBean());
+            } catch (FieldGroup.CommitException e) {
+                e.printStackTrace(System.err);
             }
         });
-        formLayout.addComponent(cancel = new Button("Cancelar") {
-            {
-                setStyleName("cancel");
-                setId("cancel");
-            }
+        cancel.addClickListener((Button.ClickEvent event) -> {
+            viewLogic.cancelItemChanges();
         });
-        formLayout.addComponent(delete = new Button("Quitar") {
-            {
-                setStyleName("danger");
-                setId("delete");
-            }
+        delete.addClickListener((Button.ClickEvent event) -> {
+            viewLogic.removeItem(fieldGroup.getItemDataSource().getBean());
         });
+
         addComponent(formLayout);
         configBinding();
     }

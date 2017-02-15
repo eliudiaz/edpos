@@ -72,7 +72,7 @@ public final class SellerView extends CssLayout implements View {
         barAndGridLayout.setStyleName("crud-main-layout");
         barAndGridLayout.setComponentAlignment(foot, Alignment.TOP_CENTER);
         addComponent(barAndGridLayout);
-        addComponent(sellItemForm = new SellItemForm());
+        addComponent(sellItemForm = new SellItemForm(viewLogic));
     }
 
     public void editItem(ItemTo item) {
@@ -84,6 +84,23 @@ public final class SellerView extends CssLayout implements View {
             sellItemForm.setEnabled(false);
         }
         sellItemForm.editItem(item);
+    }
+
+    public void updateItem(ItemTo item) {
+        grid.refresh(item);
+        sellItemForm.removeStyleName("visible");
+        sellItemForm.setEnabled(false);
+    }
+
+    public void cancelItemEdit() {
+        sellItemForm.removeStyleName("visible");
+        sellItemForm.setEnabled(false);
+    }
+
+    public void removeItem(ItemTo item) {
+        grid.remove(item);
+        sellItemForm.removeStyleName("visible");
+        sellItemForm.setEnabled(false);
     }
 
     /**
@@ -177,10 +194,6 @@ public final class SellerView extends CssLayout implements View {
         summary.setCount(summary.getCount().add(item.getQuantity()));
         summary.setTotal(summary.getTotal().add(item.getSubtotal()));
         refreshInternal();
-    }
-
-    public void removeItem(ItemTo item) {
-
     }
 
     private void refreshFooter() {

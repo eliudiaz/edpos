@@ -48,6 +48,14 @@ public class SellerLogic {
         items.add(item);
     }
 
+    public void updateItem(ItemTo item) {
+        view.updateItem(item);
+    }
+
+    public void cancelItemChanges() {
+        view.cancelItemEdit();
+    }
+
     /**
      * affects grid & footer
      *
