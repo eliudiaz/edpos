@@ -6,6 +6,7 @@
 package ed.cracken.pos.ui.helpers;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,9 +17,12 @@ import java.util.Date;
  */
 public final class DataFormatHelper {
 
+    public static final NumberFormat getFormatter() {
+        return new DecimalFormat("###,###.00");
+    }
+
     public static final String formatNumber(BigDecimal val) {
-        NumberFormat nf = NumberFormat.getInstance();
-        return nf.format(val.doubleValue());
+        return getFormatter().format(val.doubleValue());
     }
 
     public static final String formatDate(Date date) {

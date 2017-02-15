@@ -3,9 +3,11 @@ package ed.cracken.pos.ui.components;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.StringToBigDecimalConverter;
 import com.vaadin.ui.TextField;
+import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Locale;
 
 /**
@@ -15,15 +17,21 @@ import java.util.Locale;
 public class DecimalNumberField extends TextField {
 
     public DecimalNumberField() {
+        final DecimalFormat df = (DecimalFormat) DataFormatHelper.getFormatter();
         setConverter(new StringToBigDecimalConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
-                return new DecimalFormat("###,###.##");
+                return df;
             }
 
             @Override
             public BigDecimal convertToModel(String value, Class<? extends BigDecimal> targetType, Locale locale) throws Converter.ConversionException {
-                return value == null || value.isEmpty() ? BigDecimal.ZERO : BigDecimal.valueOf(Double.valueOf(value));
+                try {
+                    return value == null || value.isEmpty() ? BigDecimal.ZERO : BigDecimal.valueOf(df.parse(value).doubleValue());
+                } catch (ParseException ex) {
+                    ex.printStackTrace(System.err);
+                    return BigDecimal.ZERO;
+                }
             }
 
         });
