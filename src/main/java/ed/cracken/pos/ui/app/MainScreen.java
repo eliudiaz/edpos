@@ -1,6 +1,5 @@
 package ed.cracken.pos.ui.app;
 
-
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -9,6 +8,7 @@ import com.vaadin.ui.HorizontalLayout;
 import ed.cracken.pos.ui.ApplicationUI;
 import ed.cracken.pos.ui.about.AboutView;
 import ed.cracken.pos.ui.products.ProductCrudView;
+import ed.cracken.pos.ui.purchases.PurchaserView;
 import ed.cracken.pos.ui.seller.SellerView;
 
 /**
@@ -35,6 +35,8 @@ public class MainScreen extends HorizontalLayout {
                 ProductCrudView.VIEW_NAME, FontAwesome.EDIT);
         menu.addView(new SellerView(), SellerView.VIEW_NAME, SellerView.VIEW_NAME,
                 FontAwesome.CALCULATOR);
+        menu.addView(new PurchaserView(), PurchaserView.VIEW_NAME, SellerView.VIEW_NAME,
+                FontAwesome.GEARS);
         menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
                 FontAwesome.INFO_CIRCLE);
 

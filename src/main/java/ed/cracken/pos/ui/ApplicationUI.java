@@ -19,7 +19,7 @@ import ed.cracken.pos.ui.authentication.LoginScreen.LoginListener;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 @SpringUI
 @Theme("mockapp")

@@ -32,7 +32,7 @@ import java.math.BigDecimal;
  */
 public final class PurchaserView extends CssLayout implements View {
 
-    public static final String VIEW_NAME = "Ventas";
+    public static final String VIEW_NAME = "Compras";
 
     private Button addProductBtn;
     private TextField productCode;
