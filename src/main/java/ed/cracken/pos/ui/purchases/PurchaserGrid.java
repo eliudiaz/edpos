@@ -24,7 +24,6 @@ public final class PurchaserGrid extends Grid {
 
     public PurchaserGrid() {
         DecimalFormat df = (DecimalFormat) DataFormatHelper.getFormatter();
-        NumberRenderer nr = new NumberRenderer(df);
         setSizeFull();
         setSelectionMode(SelectionMode.SINGLE);
         setContainerDataSource(new BeanItemContainer<ItemTo>(
@@ -33,17 +32,17 @@ public final class PurchaserGrid extends Grid {
         setColumnOrder("productId", "description", "price", "quantity", "discount", "subtotal");
         getColumn("productId").setHeaderCaption("Codigo");
         getColumn("description").setHeaderCaption("Descripcion");
-        
+
         getColumn("price")
                 .setHeaderCaption("Precio U.")
-                .setRenderer(nr);
+                .setRenderer(new NumberRenderer(df));
         getColumn("quantity").setHeaderCaption("Cantidad");
         getColumn("subtotal")
                 .setHeaderCaption("Subtotal")
-                .setRenderer(nr);
+                .setRenderer(new NumberRenderer(df));
         getColumn("discount")
                 .setHeaderCaption("Descuento")
-                .setRenderer(nr);
+                .setRenderer(new NumberRenderer(df));
         getColumn("product").setHidden(true);
 
     }
