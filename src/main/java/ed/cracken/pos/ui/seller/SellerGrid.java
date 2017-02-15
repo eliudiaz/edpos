@@ -22,6 +22,8 @@ import java.util.Collection;
 public final class SellerGrid extends Grid {
 
     public SellerGrid() {
+        DecimalFormat df = (DecimalFormat) DataFormatHelper.getFormatter();
+        NumberRenderer nr = new NumberRenderer(df);
         setSizeFull();
         setSelectionMode(SelectionMode.SINGLE);
         setContainerDataSource(new BeanItemContainer<ItemTo>(
@@ -30,18 +32,17 @@ public final class SellerGrid extends Grid {
         setColumnOrder("productId", "description", "price", "quantity", "discount", "subtotal");
         getColumn("productId").setHeaderCaption("Codigo");
         getColumn("description").setHeaderCaption("Descripcion");
-        DecimalFormat df = (DecimalFormat) DataFormatHelper.getFormatter();
-
+        
         getColumn("price")
                 .setHeaderCaption("Precio U.")
-                .setRenderer(new NumberRenderer(df));
+                .setRenderer(nr);
         getColumn("quantity").setHeaderCaption("Cantidad");
         getColumn("subtotal")
                 .setHeaderCaption("Subtotal")
-                .setRenderer(new NumberRenderer(df));
+                .setRenderer(nr);
         getColumn("discount")
                 .setHeaderCaption("Descuento")
-                .setRenderer(new NumberRenderer(df));
+                .setRenderer(nr);
         getColumn("product").setHidden(true);
 
     }
