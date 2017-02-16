@@ -47,7 +47,7 @@ public final class PurchaserView extends CssLayout implements View {
     private final PurchaserLogic viewLogic;
     private final SellSummaryTo summary;
     private final PurchaserPaymentView paymentView;
-    private final PurchaseItemForm sellItemForm;
+    private final PurchaseItemForm purchaseItemForm;
 
     public PurchaserView() {
 
@@ -61,47 +61,47 @@ public final class PurchaserView extends CssLayout implements View {
             viewLogic.editItem(grid.getSelectedRow());
         });
 
-        VerticalLayout barAndGridLayout = new VerticalLayout();
+        VerticalLayout mainContent = new VerticalLayout();
         HorizontalLayout foot;
-        barAndGridLayout.addComponent(createTopBar());
-        barAndGridLayout.addComponent(grid);
-        barAndGridLayout.addComponent(foot = createFooter());
-        barAndGridLayout.setMargin(true);
-        barAndGridLayout.setSpacing(true);
-        barAndGridLayout.setSizeFull();
-        barAndGridLayout.setExpandRatio(grid, 1);
-        barAndGridLayout.setStyleName("crud-main-layout");
-        barAndGridLayout.setComponentAlignment(foot, Alignment.TOP_CENTER);
-        addComponent(barAndGridLayout);
-        addComponent(sellItemForm = new PurchaseItemForm(viewLogic));
+        mainContent.addComponent(createTopBar());
+        mainContent.addComponent(grid);
+        mainContent.addComponent(foot = createFooter());
+        mainContent.setMargin(true);
+        mainContent.setSpacing(true);
+        mainContent.setSizeFull();
+        mainContent.setExpandRatio(grid, 1);
+        mainContent.setStyleName("crud-main-layout");
+        mainContent.setComponentAlignment(foot, Alignment.TOP_CENTER);
+        addComponent(mainContent);
+        addComponent(purchaseItemForm = new PurchaseItemForm(viewLogic));
     }
 
     public void editItem(ItemTo item) {
         if (item != null) {
-            sellItemForm.addStyleName("visible");
-            sellItemForm.setEnabled(true);
+            purchaseItemForm.addStyleName("visible");
+            purchaseItemForm.setEnabled(true);
         } else {
-            sellItemForm.removeStyleName("visible");
-            sellItemForm.setEnabled(false);
+            purchaseItemForm.removeStyleName("visible");
+            purchaseItemForm.setEnabled(false);
         }
-        sellItemForm.editItem(item);
+        purchaseItemForm.editItem(item);
     }
 
     public void updateItem(ItemTo item) {
         grid.refresh(item);
-        sellItemForm.removeStyleName("visible");
-        sellItemForm.setEnabled(false);
+        purchaseItemForm.removeStyleName("visible");
+        purchaseItemForm.setEnabled(false);
     }
 
     public void cancelItemEdit() {
-        sellItemForm.removeStyleName("visible");
-        sellItemForm.setEnabled(false);
+        purchaseItemForm.removeStyleName("visible");
+        purchaseItemForm.setEnabled(false);
     }
 
     public void removeItem(ItemTo item) {
         grid.remove(item);
-        sellItemForm.removeStyleName("visible");
-        sellItemForm.setEnabled(false);
+        purchaseItemForm.removeStyleName("visible");
+        purchaseItemForm.setEnabled(false);
     }
 
     /**
