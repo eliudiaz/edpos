@@ -18,6 +18,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.components.StyledButton;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -32,7 +33,7 @@ import java.util.logging.Logger;
  */
 public final class PurchaseHeaderItemForm extends CssLayout {
 
-    protected TextField productId;
+    protected TextField id;
     protected TextField description;
     protected TextField price;
     protected TextField quantity;
@@ -45,7 +46,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
 
     protected PurchaseHeaderItemForm form;
 
-    private BeanFieldGroup<ItemTo> fieldGroup;
+    private BeanFieldGroup<PurchaseItemTo> fieldGroup;
 
     public PurchaseHeaderItemForm(PurchaserLogic viewLogic) {
 
@@ -53,7 +54,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
-        formLayout.addComponent(productId = new TextField("Code"));
+        formLayout.addComponent(id = new TextField("Code"));
         formLayout.addComponent(description = new TextField("Description"));
         formLayout.addComponent(price = new DecimalNumberField("Price"));
         formLayout.addComponent(quantity = new DecimalNumberField("Quantity"));
@@ -66,7 +67,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
                     NumberFormat nf = DecimalFormat.getInstance();
                     nf.setMaximumFractionDigits(2);
 
-                    ItemTo item;
+                    PurchaseItemTo item;
                     BigDecimal r = BigDecimal
                             .valueOf(nf
                                     .parse(event.getText()).longValue())
@@ -110,15 +111,15 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         if (product == null) {
             product = new ItemTo();
         }
-        fieldGroup.setItemDataSource(new BeanItem<ItemTo>(product));
+        fieldGroup.setItemDataSource(new BeanItem<>(product));
 
-        productId.setValidationVisible(false);
+        id.setValidationVisible(false);
         description.setValidationVisible(false);
         price.setValidationVisible(false);
         discount.setValidationVisible(false);
         subtotal.setValidationVisible(false);
 
-        productId.setReadOnly(true);
+        id.setReadOnly(true);
         description.setReadOnly(true);
         price.setReadOnly(true);
         discount.setReadOnly(true);
@@ -135,7 +136,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
     }
 
     private void configBinding() {
-        fieldGroup = new BeanFieldGroup<>(ItemTo.class);
+        fieldGroup = new BeanFieldGroup<>(PurchaseItemTo.class);
         fieldGroup.bindMemberFields(this);
 
         Property.ValueChangeListener valueListener = (Property.ValueChangeEvent event) -> {
