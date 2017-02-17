@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  *
  * @author edcracken
  */
-public final class PurchaseHeaderForm extends CssLayout {
+public final class PurchaseHeaderItemForm extends CssLayout {
 
     protected TextField productId;
     protected TextField description;
@@ -43,11 +43,11 @@ public final class PurchaseHeaderForm extends CssLayout {
     protected Button cancel;
     protected Button delete;
 
-    protected PurchaseHeaderForm form;
+    protected PurchaseHeaderItemForm form;
 
     private BeanFieldGroup<ItemTo> fieldGroup;
 
-    public PurchaseHeaderForm(PurchaserLogic viewLogic) {
+    public PurchaseHeaderItemForm(PurchaserLogic viewLogic) {
 
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setHeightUndefined();
@@ -77,7 +77,7 @@ public final class PurchaseHeaderForm extends CssLayout {
                     subtotal.setValue(nf.format(r.doubleValue()));
                     subtotal.setReadOnly(true);
                 } catch (ParseException ex) {
-                    Logger.getLogger(PurchaseHeaderForm.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PurchaseHeaderItemForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
