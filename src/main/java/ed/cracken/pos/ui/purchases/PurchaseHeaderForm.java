@@ -7,13 +7,11 @@ package ed.cracken.pos.ui.purchases;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.server.Page;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import ed.cracken.pos.ui.components.DecimalNumberField;
-import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.purchases.to.PurchaseTo;
 
 /**
  *
@@ -24,11 +22,11 @@ public final class PurchaseHeaderForm extends CssLayout {
     protected TextField providerId;
     protected TextField providerName;
     protected TextField documentNumber;
-    protected TextField documentDate;
+    protected DateField documentDate;
 
     protected PurchaseHeaderForm form;
 
-    private BeanFieldGroup<ItemTo> fieldGroup;
+    private BeanFieldGroup<PurchaseTo> fieldGroup;
 
     public PurchaseHeaderForm(PurchaserLogic viewLogic) {
 
@@ -36,10 +34,10 @@ public final class PurchaseHeaderForm extends CssLayout {
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
-        formLayout.addComponent(providerId = new TextField("Code"));
-        formLayout.addComponent(providerName = new TextField("Description"));
-        formLayout.addComponent(documentNumber = new DecimalNumberField("Price"));
-        formLayout.addComponent(documentDate = new DecimalNumberField("Quantity"));
+        formLayout.addComponent(providerId = new TextField("Codigo Proveedor:"));
+        formLayout.addComponent(providerName = new TextField("Nombre Proveedor"));
+        formLayout.addComponent(documentNumber = new TextField("No. Factura"));
+        formLayout.addComponent(documentDate = new DateField("Fecha Factura"));
 
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");
@@ -49,14 +47,8 @@ public final class PurchaseHeaderForm extends CssLayout {
         configBinding();
     }
 
-    public void editItem(ItemTo product) {
-        if (product == null) {
-            product = new ItemTo();
-        }
-        fieldGroup.setItemDataSource(new BeanItem<>(product));
-        providerName.setValidationVisible(false);
-        providerName.setReadOnly(true);
-
+    public PurchaseTo getPurchaseHeader() {
+        return fieldGroup.getItemDataSource().getBean();
     }
 
     private void formHasChanged() {
@@ -64,7 +56,7 @@ public final class PurchaseHeaderForm extends CssLayout {
     }
 
     private void configBinding() {
-        fieldGroup = new BeanFieldGroup<>(ItemTo.class);
+        fieldGroup = new BeanFieldGroup<>(PurchaseTo.class);
         fieldGroup.bindMemberFields(this);
 
         Property.ValueChangeListener valueListener = (Property.ValueChangeEvent event) -> {

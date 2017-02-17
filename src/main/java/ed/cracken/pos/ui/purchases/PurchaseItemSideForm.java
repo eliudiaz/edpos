@@ -18,7 +18,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.components.StyledButton;
-import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -45,7 +45,7 @@ public final class PurchaseItemSideForm extends CssLayout {
 
     protected PurchaseItemSideForm form;
 
-    private BeanFieldGroup<ItemTo> fieldGroup;
+    private BeanFieldGroup<PurchaseItemTo> fieldGroup;
 
     public PurchaseItemSideForm(PurchaserLogic viewLogic) {
 
@@ -69,7 +69,7 @@ public final class PurchaseItemSideForm extends CssLayout {
                     NumberFormat nf = DecimalFormat.getInstance();
                     nf.setMaximumFractionDigits(2);
 
-                    ItemTo item;
+                    PurchaseItemTo item;
                     BigDecimal r = BigDecimal
                             .valueOf(nf
                                     .parse(event.getText()).longValue())
@@ -110,11 +110,11 @@ public final class PurchaseItemSideForm extends CssLayout {
         configBinding();
     }
 
-    public void editItem(ItemTo product) {
+    public void editItem(PurchaseItemTo product) {
         if (product == null) {
-            product = new ItemTo();
+            product = new PurchaseItemTo();
         }
-        fieldGroup.setItemDataSource(new BeanItem<ItemTo>(product));
+        fieldGroup.setItemDataSource(new BeanItem<PurchaseItemTo>(product));
 
         productId.setValidationVisible(false);
         description.setValidationVisible(false);
@@ -139,7 +139,7 @@ public final class PurchaseItemSideForm extends CssLayout {
     }
 
     private void configBinding() {
-        fieldGroup = new BeanFieldGroup<>(ItemTo.class);
+        fieldGroup = new BeanFieldGroup<>(PurchaseItemTo.class);
         fieldGroup.bindMemberFields(this);
 
         Property.ValueChangeListener valueListener = (Property.ValueChangeEvent event) -> {

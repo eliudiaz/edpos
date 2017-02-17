@@ -21,6 +21,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import ed.cracken.pos.ui.seller.to.SellSummaryTo;
 import java.math.BigDecimal;
@@ -84,7 +85,7 @@ public final class PurchaserView extends CssLayout implements View {
         addComponent(purchaseItemForm = new PurchaseItemSideForm(viewLogic));
     }
 
-    public void editItem(ItemTo item) {
+    public void editItem(PurchaseItemTo item) {
         if (item != null) {
             purchaseItemForm.addStyleName("visible");
             purchaseItemForm.setEnabled(true);
@@ -95,7 +96,7 @@ public final class PurchaserView extends CssLayout implements View {
         purchaseItemForm.editItem(item);
     }
 
-    public void updateItem(ItemTo item) {
+    public void updateItem(PurchaseItemTo item) {
         grid.refresh(item);
         purchaseItemForm.removeStyleName("visible");
         purchaseItemForm.setEnabled(false);
@@ -106,7 +107,7 @@ public final class PurchaserView extends CssLayout implements View {
         purchaseItemForm.setEnabled(false);
     }
 
-    public void removeItem(ItemTo item) {
+    public void removeItem(PurchaseItemTo item) {
         grid.remove(item);
         purchaseItemForm.removeStyleName("visible");
         purchaseItemForm.setEnabled(false);

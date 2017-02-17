@@ -5,8 +5,8 @@
  */
 package ed.cracken.pos.ui.purchases;
 
-import ed.cracken.pos.ui.seller.*;
 import ed.cracken.pos.exception.ProductNotFoundException;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -21,13 +21,13 @@ import org.vaadin.mockapp.samples.backend.data.Product;
 public class PurchaserLogic {
 
     private final PurchaserView view;
-    private final List<ItemTo> items = new LinkedList<>();
+    private final List<PurchaseItemTo> items = new LinkedList<>();
 
     public PurchaserLogic(PurchaserView view) {
         this.view = view;
     }
 
-    public void editItem(ItemTo item) {
+    public void editItem(PurchaseItemTo item) {
         view.editItem(item);
     }
 
@@ -49,7 +49,7 @@ public class PurchaserLogic {
         items.add(item);
     }
 
-    public void updateItem(ItemTo item) {
+    public void updateItem(PurchaseItemTo item) {
         view.updateItem(item);
     }
 
@@ -62,7 +62,7 @@ public class PurchaserLogic {
      *
      * @param item
      */
-    public void removeItem(ItemTo item) {
+    public void removeItem(PurchaseItemTo item) {
         view.removeItem(item);
     }
 

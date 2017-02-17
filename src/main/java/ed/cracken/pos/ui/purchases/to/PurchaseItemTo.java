@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.vaadin.mockapp.samples.backend.data.Product;
 
 /**
  *
@@ -18,9 +19,15 @@ import lombok.Setter;
 @Setter
 @Builder
 public class PurchaseItemTo {
+
+    private Product product;
     private String code;
     private String name;
     private BigDecimal price;
     private BigDecimal quantity;
     private BigDecimal subtotal;
+
+    public PurchaseItemTo() {
+    }
+
 }
