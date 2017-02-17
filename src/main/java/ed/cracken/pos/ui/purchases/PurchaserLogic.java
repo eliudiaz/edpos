@@ -7,7 +7,6 @@ package ed.cracken.pos.ui.purchases;
 
 import ed.cracken.pos.exception.ProductNotFoundException;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
-import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,13 +36,11 @@ public class PurchaserLogic {
      * @param product
      */
     public void addItem(Product product) {
-        ItemTo item = ItemTo.builder()
-                .description(product.getProductName())
+        PurchaseItemTo item = PurchaseItemTo.builder()
+                .name(product.getProductName())
                 .price(product.getPrice())
                 .quantity(BigDecimal.ONE)
                 .product(product)
-                .discount(BigDecimal.ZERO)
-                .subtotal(product.getPrice().multiply(BigDecimal.ONE))
                 .build();
         view.addItem(item);
         items.add(item);

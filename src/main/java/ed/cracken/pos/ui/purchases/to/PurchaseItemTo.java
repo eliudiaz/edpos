@@ -6,6 +6,7 @@
 package ed.cracken.pos.ui.purchases.to;
 
 import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import org.vaadin.mockapp.samples.backend.data.Product;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class PurchaseItemTo {
 
     private Product product;

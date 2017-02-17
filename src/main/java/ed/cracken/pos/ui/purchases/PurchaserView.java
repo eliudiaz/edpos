@@ -204,7 +204,7 @@ public final class PurchaserView extends CssLayout implements View {
         return bottom;
     }
 
-    public void addItem(ItemTo item) {
+    public void addItem(PurchaseItemTo item) {
         grid.add(item);
         summary.setCount(summary.getCount().add(item.getQuantity()));
         summary.setTotal(summary.getTotal().add(item.getSubtotal()));
