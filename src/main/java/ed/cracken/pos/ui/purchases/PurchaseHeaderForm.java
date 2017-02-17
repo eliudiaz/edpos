@@ -7,17 +7,13 @@ package ed.cracken.pos.ui.purchases;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.Page;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
-import ed.cracken.pos.ui.components.StyledButton;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -32,16 +28,11 @@ import java.util.logging.Logger;
  */
 public final class PurchaseHeaderForm extends CssLayout {
 
-    protected TextField productId;
-    protected TextField description;
-    protected TextField price;
-    protected TextField quantity;
+    protected TextField providerId;
+    protected TextField providerName;
+    protected TextField documentNumber;
+    protected TextField documentDate;
     protected TextField subtotal;
-    protected TextField discount;
-
-    protected Button save;
-    protected Button cancel;
-    protected Button delete;
 
     protected PurchaseHeaderForm form;
 
@@ -53,14 +44,13 @@ public final class PurchaseHeaderForm extends CssLayout {
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
-        formLayout.addComponent(productId = new TextField("Code"));
-        formLayout.addComponent(description = new TextField("Description"));
-        formLayout.addComponent(price = new DecimalNumberField("Price"));
-        formLayout.addComponent(quantity = new DecimalNumberField("Quantity"));
-        formLayout.addComponent(discount = new DecimalNumberField("Discount"));
+        formLayout.addComponent(providerId = new TextField("Code"));
+        formLayout.addComponent(providerName = new TextField("Description"));
+        formLayout.addComponent(documentNumber = new DecimalNumberField("Price"));
+        formLayout.addComponent(documentDate = new DecimalNumberField("Quantity"));
         formLayout.addComponent(subtotal = new DecimalNumberField("Subtotal"));
-        price.setConverter(BigDecimal.class);
-        quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+        documentNumber.setConverter(BigDecimal.class);
+        documentDate.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
                 try {
                     NumberFormat nf = DecimalFormat.getInstance();
@@ -85,22 +75,6 @@ public final class PurchaseHeaderForm extends CssLayout {
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");
         formLayout.addComponent(separator);
-        formLayout.addComponent(save = new StyledButton("Agregar", "primary", "save"));
-        formLayout.addComponent(cancel = new StyledButton("Limpiar", "cancel", "cancel"));
-        save.addClickListener((Button.ClickEvent event) -> {
-            try {
-                fieldGroup.commit();
-                viewLogic.updateItem(fieldGroup.getItemDataSource().getBean());
-            } catch (FieldGroup.CommitException e) {
-                e.printStackTrace(System.err);
-            }
-        });
-        cancel.addClickListener((Button.ClickEvent event) -> {
-            viewLogic.cancelItemChanges();
-        });
-        delete.addClickListener((Button.ClickEvent event) -> {
-            viewLogic.removeItem(fieldGroup.getItemDataSource().getBean());
-        });
 
         addComponent(formLayout);
         configBinding();
@@ -110,18 +84,16 @@ public final class PurchaseHeaderForm extends CssLayout {
         if (product == null) {
             product = new ItemTo();
         }
-        fieldGroup.setItemDataSource(new BeanItem<ItemTo>(product));
+        fieldGroup.setItemDataSource(new BeanItem<>(product));
 
-        productId.setValidationVisible(false);
-        description.setValidationVisible(false);
-        price.setValidationVisible(false);
-        discount.setValidationVisible(false);
+        providerId.setValidationVisible(false);
+        providerName.setValidationVisible(false);
+        documentNumber.setValidationVisible(false);
         subtotal.setValidationVisible(false);
 
-        productId.setReadOnly(true);
-        description.setReadOnly(true);
-        price.setReadOnly(true);
-        discount.setReadOnly(true);
+        providerId.setReadOnly(true);
+        providerName.setReadOnly(true);
+        documentNumber.setReadOnly(true);
         subtotal.setReadOnly(true);
 
         String scrollScript = "window.document.getElementById('" + getId()
@@ -130,8 +102,7 @@ public final class PurchaseHeaderForm extends CssLayout {
     }
 
     private void formHasChanged() {
-        description.setValidationVisible(true);
-        delete.setEnabled(true);
+        providerName.setValidationVisible(true);
     }
 
     private void configBinding() {
@@ -145,25 +116,6 @@ public final class PurchaseHeaderForm extends CssLayout {
             f.addValueChangeListener(valueListener);
         });
 
-        save.addClickListener((Button.ClickEvent event) -> {
-            try {
-                fieldGroup.commit();
-                // update grid item
-            } catch (FieldGroup.CommitException e) {
-                Notification n = new Notification(
-                        "Please re-check the fields", Notification.Type.ERROR_MESSAGE);
-                n.setDelayMsec(500);
-                n.show(getUI().getPage());
-            }
-        });
-
-        cancel.addClickListener((Button.ClickEvent event) -> {
-            // just cancel
-        });
-
-        delete.addClickListener((Button.ClickEvent event) -> {
-            //remove from list
-        });
     }
 
 }
