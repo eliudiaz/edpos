@@ -55,7 +55,7 @@ public final class PurchaserView extends CssLayout implements View {
     private final PurchaserLogic viewLogic;
     private final SellSummaryTo summary;
     private final PurchaserPaymentView paymentView;
-    private final PurchaseItemForm purchaseItemForm;
+    private final PurchaseItemSideForm purchaseItemForm;
 
     public PurchaserView() {
 
@@ -81,7 +81,7 @@ public final class PurchaserView extends CssLayout implements View {
         mainContent.setStyleName("crud-main-layout");
         mainContent.setComponentAlignment(foot, Alignment.TOP_CENTER);
         addComponent(mainContent);
-        addComponent(purchaseItemForm = new PurchaseItemForm(viewLogic));
+        addComponent(purchaseItemForm = new PurchaseItemSideForm(viewLogic));
     }
 
     public void editItem(ItemTo item) {
