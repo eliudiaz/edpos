@@ -7,17 +7,14 @@ package ed.cracken.pos.ui.purchases;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
-import ed.cracken.pos.ui.components.StyledButton;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import java.math.BigDecimal;
@@ -39,10 +36,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
     protected TextField quantity;
     protected TextField subtotal;
     protected TextField discount;
-
-    protected Button save;
-    protected Button cancel;
-    protected Button delete;
+    private Button addProductBtn;
 
     protected PurchaseHeaderItemForm form;
 
@@ -86,22 +80,6 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");
         formLayout.addComponent(separator);
-        formLayout.addComponent(save = new StyledButton("Agregar", "primary", "save"));
-        formLayout.addComponent(cancel = new StyledButton("Limpiar", "cancel", "cancel"));
-        save.addClickListener((Button.ClickEvent event) -> {
-            try {
-                fieldGroup.commit();
-                viewLogic.updateItem(fieldGroup.getItemDataSource().getBean());
-            } catch (FieldGroup.CommitException e) {
-                e.printStackTrace(System.err);
-            }
-        });
-        cancel.addClickListener((Button.ClickEvent event) -> {
-            viewLogic.cancelItemChanges();
-        });
-        delete.addClickListener((Button.ClickEvent event) -> {
-            viewLogic.removeItem(fieldGroup.getItemDataSource().getBean());
-        });
 
         addComponent(formLayout);
         configBinding();
@@ -132,7 +110,6 @@ public final class PurchaseHeaderItemForm extends CssLayout {
 
     private void formHasChanged() {
         description.setValidationVisible(true);
-        delete.setEnabled(true);
     }
 
     private void configBinding() {
@@ -146,25 +123,6 @@ public final class PurchaseHeaderItemForm extends CssLayout {
             f.addValueChangeListener(valueListener);
         });
 
-        save.addClickListener((Button.ClickEvent event) -> {
-            try {
-                fieldGroup.commit();
-                // update grid item
-            } catch (FieldGroup.CommitException e) {
-                Notification n = new Notification(
-                        "Please re-check the fields", Notification.Type.ERROR_MESSAGE);
-                n.setDelayMsec(500);
-                n.show(getUI().getPage());
-            }
-        });
-
-        cancel.addClickListener((Button.ClickEvent event) -> {
-            // just cancel
-        });
-
-        delete.addClickListener((Button.ClickEvent event) -> {
-            //remove from list
-        });
     }
 
 }

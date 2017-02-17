@@ -5,7 +5,6 @@
  */
 package ed.cracken.pos.ui.purchases;
 
-import com.vaadin.event.FieldEvents;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -16,13 +15,11 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
-import ed.cracken.pos.ui.seller.to.ItemTo;
 import ed.cracken.pos.ui.seller.to.SellSummaryTo;
 import java.math.BigDecimal;
 
@@ -34,17 +31,6 @@ public final class PurchaserView extends CssLayout implements View {
 
     public static final String VIEW_NAME = "Compras";
 
-    //purchase information
-    private TextField providerCode;
-    private TextField providerName;
-    private TextField documentNumber;
-    private TextField documentDate;
-
-    // product information
-    private TextField productCode;
-    private TextField productName;
-    private TextField productPrice;
-    private TextField productQuantity;
     private Label total;
     private Label totalValue;
     private Label quantity;
@@ -56,7 +42,9 @@ public final class PurchaserView extends CssLayout implements View {
     private final PurchaserLogic viewLogic;
     private final SellSummaryTo summary;
     private final PurchaserPaymentView paymentView;
-    private final PurchaseItemSideForm purchaseItemForm;
+    private final PurchaseItemSideForm purchaseItemSideForm;
+    private PurchaseHeaderItemForm purchaseItemForm;
+    private PurchaseHeaderForm purchaseHeaderForm;
 
     public PurchaserView() {
 
@@ -82,35 +70,35 @@ public final class PurchaserView extends CssLayout implements View {
         mainContent.setStyleName("crud-main-layout");
         mainContent.setComponentAlignment(foot, Alignment.TOP_CENTER);
         addComponent(mainContent);
-        addComponent(purchaseItemForm = new PurchaseItemSideForm(viewLogic));
+        addComponent(purchaseItemSideForm = new PurchaseItemSideForm(viewLogic));
     }
 
     public void editItem(PurchaseItemTo item) {
         if (item != null) {
-            purchaseItemForm.addStyleName("visible");
-            purchaseItemForm.setEnabled(true);
+            purchaseItemSideForm.addStyleName("visible");
+            purchaseItemSideForm.setEnabled(true);
         } else {
-            purchaseItemForm.removeStyleName("visible");
-            purchaseItemForm.setEnabled(false);
+            purchaseItemSideForm.removeStyleName("visible");
+            purchaseItemSideForm.setEnabled(false);
         }
-        purchaseItemForm.editItem(item);
+        purchaseItemSideForm.editItem(item);
     }
 
     public void updateItem(PurchaseItemTo item) {
         grid.refresh(item);
-        purchaseItemForm.removeStyleName("visible");
-        purchaseItemForm.setEnabled(false);
+        purchaseItemSideForm.removeStyleName("visible");
+        purchaseItemSideForm.setEnabled(false);
     }
 
     public void cancelItemEdit() {
-        purchaseItemForm.removeStyleName("visible");
-        purchaseItemForm.setEnabled(false);
+        purchaseItemSideForm.removeStyleName("visible");
+        purchaseItemSideForm.setEnabled(false);
     }
 
     public void removeItem(PurchaseItemTo item) {
         grid.remove(item);
-        purchaseItemForm.removeStyleName("visible");
-        purchaseItemForm.setEnabled(false);
+        purchaseItemSideForm.removeStyleName("visible");
+        purchaseItemSideForm.setEnabled(false);
     }
 
     /**
@@ -119,21 +107,8 @@ public final class PurchaserView extends CssLayout implements View {
      * @return
      */
     public HorizontalLayout createTopBar() {
-
-        productCode = new TextField();
-        productCode.setStyleName("filter-textfield");
-        productCode.setInputPrompt("Codigo Producto");
-        productCode.setImmediate(true);
-        productCode.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
-            if (!event.getText().isEmpty()) {
-                viewLogic.findAndAddProduct(event.getText());
-            }
-        });
-
-        productName = new TextField();
-        productPrice = new TextField();
-        productQuantity = new TextField();
-
+        purchaseHeaderForm = new PurchaseHeaderForm(viewLogic);
+        purchaseItemForm = new PurchaseHeaderItemForm(viewLogic);
         addProductBtn = new Button("Buscar");
         addProductBtn.setIcon(FontAwesome.SEARCH);
         addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
