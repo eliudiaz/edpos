@@ -5,7 +5,6 @@
  */
 package ed.cracken.pos.ui.purchases;
 
-import ed.cracken.pos.ui.seller.*;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;

@@ -5,7 +5,6 @@
  */
 package ed.cracken.pos.ui.purchases;
 
-import ed.cracken.pos.ui.seller.*;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
@@ -34,13 +33,22 @@ public final class PurchaserView extends CssLayout implements View {
 
     public static final String VIEW_NAME = "Compras";
 
-    private Button addProductBtn;
-    private TextField productCode;
+    //purchase information
+    private TextField providerCode;
+    private TextField providerName;
+    private TextField documentNumber;
+    private TextField documentDate;
 
+    // product information
+    private TextField productCode;
+    private TextField productName;
+    private TextField productPrice;
+    private TextField productQuantity;
     private Label total;
     private Label totalValue;
     private Label quantity;
     private Label quantityValue;
+    private Button addProductBtn;
     private Button saveTrx;
     private Button cancelTrx;
     private final PurchaserGrid grid;
@@ -110,6 +118,7 @@ public final class PurchaserView extends CssLayout implements View {
      * @return
      */
     public HorizontalLayout createTopBar() {
+
         productCode = new TextField();
         productCode.setStyleName("filter-textfield");
         productCode.setInputPrompt("Codigo Producto");
@@ -119,6 +128,10 @@ public final class PurchaserView extends CssLayout implements View {
                 viewLogic.findAndAddProduct(event.getText());
             }
         });
+
+        productName = new TextField();
+        productPrice = new TextField();
+        productQuantity = new TextField();
 
         addProductBtn = new Button("Buscar");
         addProductBtn.setIcon(FontAwesome.SEARCH);

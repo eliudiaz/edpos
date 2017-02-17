@@ -5,7 +5,6 @@
  */
 package ed.cracken.pos.ui.purchases;
 
-import ed.cracken.pos.ui.seller.*;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
