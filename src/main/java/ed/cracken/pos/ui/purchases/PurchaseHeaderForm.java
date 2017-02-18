@@ -36,13 +36,9 @@ public final class PurchaseHeaderForm extends CssLayout {
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
         formLayout.addComponent(buildComponentsRow(providerId = new TextField("Codigo Proveedor:"),
-                providerName = new TextField("Nombre Proveedor")));
-        formLayout.addComponent(buildComponentsRow(documentNumber = new TextField("No. Factura"),
+                providerName = new TextField("Nombre Proveedor"),
+                documentNumber = new TextField("No. Factura"),
                 documentDate = new DateField("Fecha Factura")));
-
-        CssLayout separator = new CssLayout();
-        separator.setStyleName("expander");
-        formLayout.addComponent(separator);
 
         addComponent(formLayout);
         configBinding();

@@ -10,6 +10,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
@@ -58,12 +59,12 @@ public final class PurchaserView extends CssLayout implements View {
         });
 
         VerticalLayout mainContent = new VerticalLayout();
-        HorizontalLayout foot, top;
+        AbstractOrderedLayout foot, top;
         mainContent.addComponent(top = createTopBar());
         mainContent.addComponent(grid);
         mainContent.addComponent(foot = createFooter());
         mainContent.setMargin(true);
-        mainContent.setSpacing(true);
+//        mainContent.setSpacing(true);
         mainContent.setSizeFull();
         mainContent.setExpandRatio(grid, 1);
         mainContent.setStyleName("crud-main-layout");
@@ -106,10 +107,11 @@ public final class PurchaserView extends CssLayout implements View {
      *
      * @return
      */
-    public HorizontalLayout createTopBar() {
+    public VerticalLayout createTopBar() {
         purchaseHeaderForm = new PurchaseHeaderForm(viewLogic);
         purchaseItemForm = new PurchaseHeaderItemForm(viewLogic);
-        HorizontalLayout topLayout = new HorizontalLayout(purchaseItemForm);
+        VerticalLayout topLayout = new VerticalLayout(purchaseHeaderForm,
+                purchaseItemForm);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
         return topLayout;

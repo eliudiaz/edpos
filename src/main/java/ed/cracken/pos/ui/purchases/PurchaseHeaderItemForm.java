@@ -10,8 +10,12 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.Page;
+import com.vaadin.ui.AbstractTextField;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
@@ -22,13 +26,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-/**
- *
- * @author edcracken
- */
 public final class PurchaseHeaderItemForm extends CssLayout {
 
     protected TextField id;
@@ -37,7 +35,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
     protected TextField quantity;
     protected TextField subtotal;
     protected TextField discount;
-    private Button addProductBtn;
+    private Button save;
 
     protected PurchaseHeaderItemForm form;
 
@@ -49,11 +47,26 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
-        formLayout.addComponent(UIHelper.buildComponentsRow(id = new TextField("Codigo"),
+        HorizontalLayout fields;
+        Panel purchaseItemArea = new Panel("Nuevo Producto", fields = UIHelper.buildComponentsRow(id = new TextField("Codigo"),
                 description = new TextField("Nombre"),
                 price = new DecimalNumberField("Precio"),
                 quantity = new DecimalNumberField("Cantidad"),
-                subtotal = new DecimalNumberField("Subtotal")));
+                subtotal = new DecimalNumberField("Subtotal"),
+                save = new Button("Agregar") {
+            {
+                setStyleName("primary");
+
+                setId("save");
+            }
+        }));
+        id.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+
+        });
+        id.setTextChangeEventMode(AbstractTextField.TextChangeEventMode.EAGER);
+        formLayout.addComponent(purchaseItemArea);
+        fields.setComponentAlignment(save, Alignment.BOTTOM_LEFT);
+        fields.setMargin(true);
         price.setConverter(BigDecimal.class);
         quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
@@ -72,7 +85,6 @@ public final class PurchaseHeaderItemForm extends CssLayout {
                     subtotal.setValue(nf.format(r.doubleValue()));
                     subtotal.setReadOnly(true);
                 } catch (ParseException ex) {
-                    Logger.getLogger(PurchaseHeaderItemForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
