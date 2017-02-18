@@ -12,6 +12,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.purchases.to.PurchaseTo;
+import static ed.cracken.pos.ui.utils.UIHelper.buildComponentsRow;
 
 /**
  *
@@ -34,10 +35,10 @@ public final class PurchaseHeaderForm extends CssLayout {
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
-        formLayout.addComponent(providerId = new TextField("Codigo Proveedor:"));
-        formLayout.addComponent(providerName = new TextField("Nombre Proveedor"));
-        formLayout.addComponent(documentNumber = new TextField("No. Factura"));
-        formLayout.addComponent(documentDate = new DateField("Fecha Factura"));
+        formLayout.addComponent(buildComponentsRow(providerId = new TextField("Codigo Proveedor:"),
+                providerName = new TextField("Nombre Proveedor")));
+        formLayout.addComponent(buildComponentsRow(documentNumber = new TextField("No. Factura"),
+                documentDate = new DateField("Fecha Factura")));
 
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");

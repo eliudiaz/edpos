@@ -35,7 +35,6 @@ public final class PurchaserView extends CssLayout implements View {
     private Label totalValue;
     private Label quantity;
     private Label quantityValue;
-    private Button addProductBtn;
     private Button saveTrx;
     private Button cancelTrx;
     private final PurchaserGrid grid;
@@ -59,8 +58,8 @@ public final class PurchaserView extends CssLayout implements View {
         });
 
         VerticalLayout mainContent = new VerticalLayout();
-        HorizontalLayout foot;
-        mainContent.addComponent(createTopBar());
+        HorizontalLayout foot, top;
+        mainContent.addComponent(top = createTopBar());
         mainContent.addComponent(grid);
         mainContent.addComponent(foot = createFooter());
         mainContent.setMargin(true);
@@ -69,6 +68,7 @@ public final class PurchaserView extends CssLayout implements View {
         mainContent.setExpandRatio(grid, 1);
         mainContent.setStyleName("crud-main-layout");
         mainContent.setComponentAlignment(foot, Alignment.TOP_CENTER);
+        mainContent.setComponentAlignment(top, Alignment.TOP_LEFT);
         addComponent(mainContent);
         addComponent(purchaseItemSideForm = new PurchaseItemSideForm(viewLogic));
     }
@@ -109,17 +109,7 @@ public final class PurchaserView extends CssLayout implements View {
     public HorizontalLayout createTopBar() {
         purchaseHeaderForm = new PurchaseHeaderForm(viewLogic);
         purchaseItemForm = new PurchaseHeaderItemForm(viewLogic);
-        addProductBtn = new Button("Buscar");
-        addProductBtn.setIcon(FontAwesome.SEARCH);
-        addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
-        addProductBtn.addClickListener((Button.ClickEvent event) -> {
-            if (!productCode.getValue().isEmpty()) {
-                viewLogic.findAndAddProduct(productCode.getValue());
-            }
-        });
-
-        HorizontalLayout topLayout = new HorizontalLayout(productCode, addProductBtn);
+        HorizontalLayout topLayout = new HorizontalLayout(purchaseItemForm);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
         return topLayout;

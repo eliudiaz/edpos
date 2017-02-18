@@ -17,6 +17,7 @@ import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.utils.UIHelper;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -48,12 +49,11 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
-        formLayout.addComponent(id = new TextField("Code"));
-        formLayout.addComponent(description = new TextField("Description"));
-        formLayout.addComponent(price = new DecimalNumberField("Price"));
-        formLayout.addComponent(quantity = new DecimalNumberField("Quantity"));
-        formLayout.addComponent(discount = new DecimalNumberField("Discount"));
-        formLayout.addComponent(subtotal = new DecimalNumberField("Subtotal"));
+        formLayout.addComponent(UIHelper.buildComponentsRow(id = new TextField("Codigo"),
+                description = new TextField("Nombre"),
+                price = new DecimalNumberField("Precio"),
+                quantity = new DecimalNumberField("Cantidad"),
+                subtotal = new DecimalNumberField("Subtotal")));
         price.setConverter(BigDecimal.class);
         quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
