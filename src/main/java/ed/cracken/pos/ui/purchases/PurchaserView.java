@@ -48,7 +48,10 @@ public final class PurchaserView extends CssLayout implements View {
 
     public PurchaserView() {
 
-        summary = SellSummaryTo.builder().count(BigDecimal.ZERO).total(BigDecimal.ZERO).build();
+        summary = SellSummaryTo
+                .builder()
+                .count(BigDecimal.ZERO)
+                .total(BigDecimal.ZERO).build();
         setSizeFull();
         addStyleName("crud-view");
         viewLogic = new PurchaserLogic(this);
@@ -64,7 +67,6 @@ public final class PurchaserView extends CssLayout implements View {
         mainContent.addComponent(grid);
         mainContent.addComponent(foot = createFooter());
         mainContent.setMargin(true);
-//        mainContent.setSpacing(true);
         mainContent.setSizeFull();
         mainContent.setExpandRatio(grid, 1);
         mainContent.setStyleName("crud-main-layout");
@@ -118,7 +120,6 @@ public final class PurchaserView extends CssLayout implements View {
     }
 
     private void refreshInternal() {
-
         totalValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getTotal()) + "</strong></h2>");
         quantityValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getCount()) + "</strong></h2>");
     }
@@ -178,8 +179,8 @@ public final class PurchaserView extends CssLayout implements View {
         refreshInternal();
     }
 
-    private void refreshFooter() {
-
+    public void showItem(PurchaseItemTo item) {
+        purchaseItemForm.setItem(item);
     }
 
     /**

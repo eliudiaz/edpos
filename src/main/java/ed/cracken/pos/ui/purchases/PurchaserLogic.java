@@ -46,6 +46,16 @@ public class PurchaserLogic {
         items.add(item);
     }
 
+    public void showItem(Product product) {
+        PurchaseItemTo item = PurchaseItemTo.builder()
+                .name(product.getProductName())
+                .price(product.getPrice())
+                .quantity(BigDecimal.ONE)
+                .product(product)
+                .build();
+        view.showItem(item);
+    }
+
     public void updateItem(PurchaseItemTo item) {
         view.updateItem(item);
     }
@@ -65,6 +75,10 @@ public class PurchaserLogic {
 
     public void findAndAddProduct(String code) {
         addItem(findProduct(code));
+    }
+
+    public void findAndShowProduct(String code) {
+        showItem(findProduct(code));
     }
 
     private Product findProduct(String code) {
