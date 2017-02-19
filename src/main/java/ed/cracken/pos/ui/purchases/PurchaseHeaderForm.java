@@ -12,7 +12,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.purchases.to.PurchaseTo;
-import static ed.cracken.pos.ui.utils.UIHelper.buildComponentsRow;
+import static ed.cracken.pos.ui.helpers.UIHelper.buildComponentsRow;
 
 /**
  *

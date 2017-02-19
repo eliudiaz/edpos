@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ed.cracken.pos.ui.utils;
+package ed.cracken.pos.ui.helpers;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;

@@ -18,8 +18,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
+import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
-import ed.cracken.pos.ui.utils.UIHelper;
+import ed.cracken.pos.ui.helpers.UIHelper;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -39,7 +40,6 @@ public final class PurchaseHeaderItemForm extends CssLayout {
     private BeanFieldGroup<PurchaseItemTo> fieldGroup;
 
     public PurchaseHeaderItemForm(PurchaserLogic viewLogic) {
-
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
@@ -53,7 +53,6 @@ public final class PurchaseHeaderItemForm extends CssLayout {
                 save = new Button("Agregar") {
             {
                 setStyleName("primary");
-
                 setId("save");
             }
         }));
@@ -62,33 +61,26 @@ public final class PurchaseHeaderItemForm extends CssLayout {
                 viewLogic.findAndShowProduct(event.getText());
             }
         });
-
+        id.setTextChangeEventMode(AbstractTextField.TextChangeEventMode.EAGER);
+        price.setConverter(BigDecimal.class);
+        quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            if (!event.getText().isEmpty()) {
+                subtotal.setReadOnly(false);
+                subtotal.setValue(
+                        DataFormatHelper.formatNumber(
+                                fieldGroup.getItemDataSource()
+                                        .getBean()
+                                        .getPrice()
+                                        .multiply(BigDecimal
+                                                .valueOf(Float
+                                                        .valueOf(event.getText())))));
+                subtotal.setReadOnly(true);
+            }
+        });
         id.setTextChangeEventMode(AbstractTextField.TextChangeEventMode.EAGER);
         formLayout.addComponent(purchaseItemArea);
         fields.setComponentAlignment(save, Alignment.BOTTOM_LEFT);
         fields.setMargin(true);
-        price.setConverter(BigDecimal.class);
-        quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
-            if (!event.getText().isEmpty()) {
-                try {
-                    NumberFormat nf = DecimalFormat.getInstance();
-                    nf.setMaximumFractionDigits(2);
-
-                    PurchaseItemTo item;
-                    BigDecimal r = BigDecimal
-                            .valueOf(nf
-                                    .parse(event.getText()).longValue())
-                            .multiply((item = fieldGroup.getItemDataSource().getBean())
-                                    .getPrice());
-                    subtotal.setReadOnly(false);
-
-                    subtotal.setValue(nf.format(r.doubleValue()));
-                    subtotal.setReadOnly(true);
-                }
-                catch (ParseException ex) {
-                }
-            }
-        });
 
         CssLayout separator = new CssLayout();
         separator.setStyleName("expander");
@@ -96,11 +88,17 @@ public final class PurchaseHeaderItemForm extends CssLayout {
 
         addComponent(formLayout);
         configBinding();
+        setItem(null);
     }
 
     public void setItem(PurchaseItemTo product) {
         if (product == null) {
-            throw new RuntimeException("You cannot add empty product!");
+            product = PurchaseItemTo
+                    .builder()
+                    .name("")
+                    .quantity(BigDecimal.ZERO)
+                    .price(BigDecimal.ZERO)
+                    .build();
         }
         product.setQuantity(BigDecimal.ONE);
         product.setSubtotal(product.getPrice().multiply(product.getQuantity()));
