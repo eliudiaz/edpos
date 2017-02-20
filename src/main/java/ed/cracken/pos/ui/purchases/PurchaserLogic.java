@@ -46,6 +46,16 @@ public class PurchaserLogic {
         items.add(item);
     }
 
+    /**
+     * affects grid & footer
+     *
+     * @param product
+     */
+    public void addItem(PurchaseItemTo item) {
+        view.addItem(item);
+        items.add(item);
+    }
+
     public void showItem(Product product) {
         PurchaseItemTo item = PurchaseItemTo.builder()
                 .name(product.getProductName())

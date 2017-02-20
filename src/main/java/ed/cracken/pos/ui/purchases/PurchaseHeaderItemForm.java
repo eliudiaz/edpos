@@ -7,8 +7,10 @@ package ed.cracken.pos.ui.purchases;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.FieldEvents;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -17,14 +19,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.helpers.UIHelper;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 
 public final class PurchaseHeaderItemForm extends CssLayout {
 
@@ -33,7 +33,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
     protected TextField price;
     protected TextField quantity;
     protected TextField subtotal;
-    private Button save;
+    private Button addProductBtn;
 
     protected PurchaseHeaderItemForm form;
 
@@ -45,17 +45,28 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         formLayout.setSpacing(true);
         formLayout.setStyleName("form-layout");
         HorizontalLayout fields;
-        Panel purchaseItemArea = new Panel("Nuevo Producto", fields = UIHelper.buildComponentsRow(id = new TextField("Codigo"),
-                name = new TextField("Nombre"),
-                price = new DecimalNumberField("Precio"),
-                quantity = new DecimalNumberField("Cantidad"),
-                subtotal = new DecimalNumberField("Subtotal"),
-                save = new Button("Agregar") {
-            {
-                setStyleName("primary");
-                setId("save");
+        Panel purchaseItemArea = new Panel("Nuevo Producto",
+                fields = UIHelper.buildComponentsRow(id = new TextField("Codigo"),
+                        name = new TextField("Nombre"),
+                        price = new DecimalNumberField("Precio"),
+                        quantity = new DecimalNumberField("Cantidad"),
+                        subtotal = new DecimalNumberField("Subtotal"),
+                        addProductBtn = new Button("Buscar")));
+        addProductBtn.setIcon(FontAwesome.SEARCH);
+        addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
+        addProductBtn.addClickListener((Button.ClickEvent event) -> {
+            try {
+                fieldGroup.commit();
+                viewLogic.addItem(fieldGroup.getItemDataSource().getBean());
+                setItem(null);
             }
-        }));
+            catch (FieldGroup.CommitException ex) {
+                ex.printStackTrace(System.err);
+            }
+        }
+        );
+
         id.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
                 viewLogic.findAndShowProduct(event.getText());
@@ -79,7 +90,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         });
         id.setTextChangeEventMode(AbstractTextField.TextChangeEventMode.EAGER);
         formLayout.addComponent(purchaseItemArea);
-        fields.setComponentAlignment(save, Alignment.BOTTOM_LEFT);
+        fields.setComponentAlignment(addProductBtn, Alignment.BOTTOM_LEFT);
         fields.setMargin(true);
 
         CssLayout separator = new CssLayout();
@@ -95,6 +106,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         if (product == null) {
             product = PurchaseItemTo
                     .builder()
+                    .code("")
                     .name("")
                     .quantity(BigDecimal.ZERO)
                     .price(BigDecimal.ZERO)
