@@ -51,7 +51,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
                         price = new DecimalNumberField("Precio"),
                         quantity = new DecimalNumberField("Cantidad"),
                         subtotal = new DecimalNumberField("Subtotal"),
-                        addProductBtn = new Button("Buscar")));
+                        addProductBtn = new Button("Agregar")));
         addProductBtn.setIcon(FontAwesome.SEARCH);
         addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
         addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);

@@ -35,7 +35,7 @@ public class MainScreen extends HorizontalLayout {
                 ProductCrudView.VIEW_NAME, FontAwesome.EDIT);
         menu.addView(new SellerView(), SellerView.VIEW_NAME, SellerView.VIEW_NAME,
                 FontAwesome.CALCULATOR);
-        menu.addView(new PurchaserView(), PurchaserView.VIEW_NAME, SellerView.VIEW_NAME,
+        menu.addView(new PurchaserView(), PurchaserView.VIEW_NAME, PurchaserView.VIEW_NAME,
                 FontAwesome.GEARS);
         menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
                 FontAwesome.INFO_CIRCLE);
