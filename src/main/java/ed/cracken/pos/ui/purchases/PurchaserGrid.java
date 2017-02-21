@@ -47,7 +47,7 @@ public final class PurchaserGrid extends Grid {
     public void refresh(PurchaseItemTo pItem) {
         BeanItem<PurchaseItemTo> item = getContainer().getItem(pItem);
         if (item != null) {
-            MethodProperty p = (MethodProperty) item.getItemProperty("productId");
+            MethodProperty p = (MethodProperty) item.getItemProperty("code");
             p.fireValueChange();
         } else {
             getContainer().addBean(pItem);
