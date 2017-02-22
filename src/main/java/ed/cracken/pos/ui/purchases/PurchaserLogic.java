@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import org.vaadin.mockapp.samples.backend.DataService;
 import ed.cracken.pos.backend.model.Product;
+import ed.cracken.pos.backend.model.Provider;
+import ed.cracken.pos.exception.ProviderNotFoundException;
 
 /**
  *
@@ -86,9 +88,15 @@ public class PurchaserLogic {
     public void findAndAddProduct(String code) {
         addItem(findProduct(code));
     }
-    
-    public void findProvider(String code){
-        
+
+    public Provider findProvider(String code) {
+        return DataService.get().getAllProviders().stream().filter(p -> p.getId().equalsIgnoreCase(code))
+                .findFirst()
+                .orElseThrow(ProviderNotFoundException::new);
+    }
+
+    public void setProvider(Provider provider) {
+        view.setProvider(provider);
     }
 
     public void findAndShowProduct(String code) {

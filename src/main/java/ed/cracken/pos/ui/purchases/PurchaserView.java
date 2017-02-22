@@ -19,6 +19,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import ed.cracken.pos.backend.model.Provider;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.seller.to.SellSummaryTo;
@@ -74,6 +75,10 @@ public final class PurchaserView extends CssLayout implements View {
         mainContent.setComponentAlignment(top, Alignment.TOP_LEFT);
         addComponent(mainContent);
         addComponent(purchaseItemSideForm = new PurchaseItemSideForm(viewLogic));
+    }
+    
+    public void setProvider(Provider provider){
+        
     }
 
     public void editItem(PurchaseItemTo item) {
