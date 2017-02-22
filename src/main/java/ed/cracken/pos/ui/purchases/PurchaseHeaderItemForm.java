@@ -20,11 +20,11 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import ed.cracken.pos.ui.components.DecimalNumberField;
-import ed.cracken.pos.ui.helpers.DataFormatHelper;
-import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
-import static ed.cracken.pos.ui.helpers.UIHelper.buildComponentsRow;
 import java.math.BigDecimal;
+import ed.cracken.pos.ui.components.DecimalNumberField;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
+import static ed.cracken.pos.ui.helpers.DataFormatHelper.formatNumber;
+import static ed.cracken.pos.ui.helpers.UIHelper.buildComponentsRow;
 
 public final class PurchaseHeaderItemForm extends CssLayout {
 
@@ -78,7 +78,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
             if (!event.getText().isEmpty()) {
                 subtotal.setReadOnly(false);
                 subtotal.setValue(
-                        DataFormatHelper.formatNumber(
+                        formatNumber(
                                 fieldGroup.getItemDataSource()
                                 .getBean()
                                 .getPrice()

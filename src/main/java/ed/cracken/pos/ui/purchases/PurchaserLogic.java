@@ -76,11 +76,6 @@ public class PurchaserLogic {
         view.cancelItemEdit();
     }
 
-    /**
-     * affects grid & footer
-     *
-     * @param item
-     */
     public void removeItem(PurchaseItemTo item) {
         view.removeItem(item);
     }

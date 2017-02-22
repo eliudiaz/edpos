@@ -76,9 +76,9 @@ public final class PurchaserView extends CssLayout implements View {
         addComponent(mainContent);
         addComponent(purchaseItemSideForm = new PurchaseItemSideForm(viewLogic));
     }
-    
-    public void setProvider(Provider provider){
-        
+
+    public void setProvider(Provider provider) {
+        purchaseHeaderForm.setProvider(provider);
     }
 
     public void editItem(PurchaseItemTo item) {
@@ -149,24 +149,25 @@ public final class PurchaserView extends CssLayout implements View {
         cancelTrx = new Button("Cancelar", FontAwesome.CLOSE);
         cancelTrx.addStyleName(ValoTheme.BUTTON_DANGER);
         cancelTrx.setHeight("60px");
-        HorizontalLayout bottom = new HorizontalLayout();
+
         HorizontalLayout labelsArea = new HorizontalLayout();
-        HorizontalLayout buttonsArea = new HorizontalLayout();
 
         labelsArea.setSpacing(true);
         labelsArea.addComponent(total);
         labelsArea.addComponent(totalValue);
         labelsArea.addComponent(quantity);
         labelsArea.addComponent(quantityValue);
-
         labelsArea.setComponentAlignment(total, Alignment.MIDDLE_LEFT);
         labelsArea.setComponentAlignment(totalValue, Alignment.MIDDLE_LEFT);
         labelsArea.setComponentAlignment(quantity, Alignment.MIDDLE_RIGHT);
         labelsArea.setComponentAlignment(quantityValue, Alignment.MIDDLE_RIGHT);
 
+        HorizontalLayout buttonsArea = new HorizontalLayout();
         buttonsArea.setSpacing(true);
         buttonsArea.addComponent(saveTrx);
         buttonsArea.addComponent(cancelTrx);
+
+        HorizontalLayout bottom = new HorizontalLayout();
         bottom.setSpacing(true);
         bottom.addComponent(buttonsArea);
         bottom.addComponent(labelsArea);

@@ -56,9 +56,14 @@ public final class PurchaseHeaderForm extends CssLayout {
     }
 
     public void setProvider(Provider provider) {
-        purchase.setProvider(provider);
-        purchase.setProviderId(provider.getId());
-        purchase.setProviderName(provider.getName());
+        if (provider == null) {
+            purchase.setProviderId("");
+            purchase.setProviderName("");
+        } else {
+            purchase.setProvider(provider);
+            purchase.setProviderId(provider.getId());
+            purchase.setProviderName(provider.getName());
+        }
     }
 
     public PurchaseTo getPurchaseHeader() {
