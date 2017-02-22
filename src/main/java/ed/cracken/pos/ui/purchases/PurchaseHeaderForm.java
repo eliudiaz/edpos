@@ -7,6 +7,7 @@ package ed.cracken.pos.ui.purchases;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
@@ -39,7 +40,11 @@ public final class PurchaseHeaderForm extends CssLayout {
                 providerName = new TextField("Nombre Proveedor"),
                 documentNumber = new TextField("No. Factura"),
                 documentDate = new DateField("Fecha Factura")));
-
+        providerId.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            if (!event.getText().isEmpty()) {
+                viewLogic.findAndShowProduct(event.getText());
+            }
+        });
         addComponent(formLayout);
         configBinding();
     }

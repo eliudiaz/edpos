@@ -86,6 +86,10 @@ public class PurchaserLogic {
     public void findAndAddProduct(String code) {
         addItem(findProduct(code));
     }
+    
+    public void findProvider(String code){
+        
+    }
 
     public void findAndShowProduct(String code) {
         showItem(findProduct(code));

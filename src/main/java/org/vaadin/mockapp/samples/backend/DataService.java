@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import ed.cracken.pos.backend.model.Category;
 import ed.cracken.pos.backend.model.Product;
+import ed.cracken.pos.backend.model.Provider;
 import org.vaadin.mockapp.samples.backend.mock.MockDataService;
 
 /**
@@ -14,6 +15,8 @@ public abstract class DataService {
     public abstract Collection<Product> getAllProducts();
 
     public abstract Collection<Category> getAllCategories();
+
+    public abstract Collection<Provider> getAllProviders();
 
     public abstract void updateProduct(Product p);
 

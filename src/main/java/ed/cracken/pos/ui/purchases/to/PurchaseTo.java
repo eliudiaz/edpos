@@ -5,6 +5,7 @@
  */
 package ed.cracken.pos.ui.purchases.to;
 
+import ed.cracken.pos.backend.model.Provider;
 import java.util.Date;
 import java.util.List;
 import lombok.Builder;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class PurchaseTo {
-    private ProviderTo provider;
+    private Provider provider;
     private String providerId;
     private String providerName;
     private String documentNumber;

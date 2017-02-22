@@ -5,10 +5,23 @@
  */
 package ed.cracken.pos.backend.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author eliud
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class Provider {
-    
+
+    private String id;
+    private String name;
+    private String address;
+
 }
