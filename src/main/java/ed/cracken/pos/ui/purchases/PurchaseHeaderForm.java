@@ -51,6 +51,7 @@ public final class PurchaseHeaderForm extends CssLayout {
                 .builder()
                 .providerId("")
                 .providerName("")
+                .documentNumber("")                
                 .build();
         configBinding();
     }
@@ -64,6 +65,7 @@ public final class PurchaseHeaderForm extends CssLayout {
             purchase.setProviderId(provider.getId());
             purchase.setProviderName(provider.getName());
         }
+        fieldGroup.setItemDataSource(purchase);
     }
 
     public PurchaseTo getPurchaseHeader() {
