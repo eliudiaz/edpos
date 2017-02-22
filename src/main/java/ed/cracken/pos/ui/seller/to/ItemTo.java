@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Product;
 
 /**
  *

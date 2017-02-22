@@ -1,4 +1,4 @@
-package org.vaadin.mockapp.samples.backend.data;
+package ed.cracken.pos.backend.model;
 
 import java.io.Serializable;
 

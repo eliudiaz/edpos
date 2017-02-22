@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.vaadin.mockapp.samples.backend.data.Category;
+import ed.cracken.pos.backend.model.Category;
 
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;

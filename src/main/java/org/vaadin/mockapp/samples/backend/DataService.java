@@ -2,8 +2,8 @@ package org.vaadin.mockapp.samples.backend;
 
 import java.util.Collection;
 
-import org.vaadin.mockapp.samples.backend.data.Category;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Category;
+import ed.cracken.pos.backend.model.Product;
 import org.vaadin.mockapp.samples.backend.mock.MockDataService;
 
 /**

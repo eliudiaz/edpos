@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.vaadin.mockapp.samples.backend.data.Availability;
-import org.vaadin.mockapp.samples.backend.data.Category;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Availability;
+import ed.cracken.pos.backend.model.Category;
+import ed.cracken.pos.backend.model.Product;
 
 public class MockDataGenerator {
     private static int nextCategoryId = 1;

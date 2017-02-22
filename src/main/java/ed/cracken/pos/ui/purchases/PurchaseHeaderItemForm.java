@@ -23,7 +23,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
-import ed.cracken.pos.ui.helpers.UIHelper;
+import static ed.cracken.pos.ui.helpers.UIHelper.buildComponentsRow;
 import java.math.BigDecimal;
 
 public final class PurchaseHeaderItemForm extends CssLayout {
@@ -46,7 +46,7 @@ public final class PurchaseHeaderItemForm extends CssLayout {
         formLayout.setStyleName("form-layout");
         HorizontalLayout fields;
         Panel purchaseItemArea = new Panel("Nuevo Producto",
-                fields = UIHelper.buildComponentsRow(id = new TextField("Codigo"),
+                fields = buildComponentsRow(id = new TextField("Codigo"),
                         name = new TextField("Nombre"),
                         price = new DecimalNumberField("Precio"),
                         quantity = new DecimalNumberField("Cantidad"),
@@ -80,11 +80,11 @@ public final class PurchaseHeaderItemForm extends CssLayout {
                 subtotal.setValue(
                         DataFormatHelper.formatNumber(
                                 fieldGroup.getItemDataSource()
-                                        .getBean()
-                                        .getPrice()
-                                        .multiply(BigDecimal
-                                                .valueOf(Float
-                                                        .valueOf(event.getText())))));
+                                .getBean()
+                                .getPrice()
+                                .multiply(BigDecimal
+                                        .valueOf(Float
+                                                .valueOf(event.getText())))));
                 subtotal.setReadOnly(true);
             }
         });
@@ -111,9 +111,11 @@ public final class PurchaseHeaderItemForm extends CssLayout {
                     .quantity(BigDecimal.ZERO)
                     .price(BigDecimal.ZERO)
                     .build();
+            id.setValue("");
+        } else {
+            product.setQuantity(BigDecimal.ONE);
+            product.setSubtotal(product.getPrice().multiply(product.getQuantity()));
         }
-        product.setQuantity(BigDecimal.ONE);
-        product.setSubtotal(product.getPrice().multiply(product.getQuantity()));
         fieldGroup.setItemDataSource(new BeanItem<>(product));
 
         id.setValidationVisible(false);
@@ -132,7 +134,6 @@ public final class PurchaseHeaderItemForm extends CssLayout {
     private void configBinding() {
         fieldGroup = new BeanFieldGroup<>(PurchaseItemTo.class);
         fieldGroup.bindMemberFields(this);
-
         Property.ValueChangeListener valueListener = (Property.ValueChangeEvent event) -> {
             formHasChanged();
         };

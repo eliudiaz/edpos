@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Product;
 
 /**
  *

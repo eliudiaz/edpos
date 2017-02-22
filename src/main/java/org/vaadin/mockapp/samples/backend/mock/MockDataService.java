@@ -3,8 +3,8 @@ package org.vaadin.mockapp.samples.backend.mock;
 import java.util.List;
 
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Category;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Category;
+import ed.cracken.pos.backend.model.Product;
 
 /**
  * Mock data model. This implementation has very simplistic locking and does not

@@ -1,4 +1,4 @@
-package org.vaadin.mockapp.samples.backend.data;
+package ed.cracken.pos.backend.model;
 
 public enum Availability {
     COMING("Coming"), AVAILABLE("Available"), DISCONTINUED("Discontinued");

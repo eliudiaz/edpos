@@ -31,7 +31,6 @@ public final class PurchaserGrid extends Grid {
         setColumnOrder("code", "name", "price", "quantity", "subtotal");
         getColumn("code").setHeaderCaption("Codigo");
         getColumn("name").setHeaderCaption("Descripcion");
-
         getColumn("price")
                 .setHeaderCaption("Precio U.")
                 .setRenderer(new NumberRenderer(df));

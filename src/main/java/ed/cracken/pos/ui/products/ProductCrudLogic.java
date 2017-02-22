@@ -1,7 +1,7 @@
 package ed.cracken.pos.ui.products;
 
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Product;
 
 import com.vaadin.server.Page;
 import ed.cracken.pos.ui.ApplicationUI;
