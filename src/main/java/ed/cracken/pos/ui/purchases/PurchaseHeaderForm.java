@@ -8,11 +8,13 @@ package ed.cracken.pos.ui.purchases;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.event.FieldEvents;
+import com.vaadin.server.UserError;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.backend.model.Provider;
+import ed.cracken.pos.exception.ProviderNotFoundException;
 import ed.cracken.pos.ui.purchases.to.PurchaseTo;
 import static ed.cracken.pos.ui.helpers.UIHelper.buildComponentsRow;
 
@@ -31,7 +33,6 @@ public final class PurchaseHeaderForm extends CssLayout {
     private PurchaseTo purchase;
 
     public PurchaseHeaderForm(PurchaserLogic viewLogic) {
-
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setHeightUndefined();
         formLayout.setSpacing(true);
@@ -40,18 +41,29 @@ public final class PurchaseHeaderForm extends CssLayout {
                 providerName = new TextField("Nombre Proveedor"),
                 documentNumber = new TextField("No. Factura"),
                 documentDate = new DateField("Fecha Factura")));
+        providerName.setReadOnly(true);
 
         addComponent(formLayout);
         providerId.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
-                viewLogic.setProvider(viewLogic.findProvider(event.getText()));
+                try {
+                    providerName.setReadOnly(false);
+                    viewLogic.setProvider(viewLogic.findProvider(event.getText()));
+                    providerId.setComponentError(null);
+                    providerName.setReadOnly(true);
+                }
+                catch (ProviderNotFoundException p) {
+                    viewLogic.setProvider(null);
+                    providerId.setComponentError(new UserError(p.getMessage()));
+                }
             }
         });
+
         purchase = PurchaseTo
                 .builder()
                 .providerId("")
                 .providerName("")
-                .documentNumber("")                
+                .documentNumber("")
                 .build();
         configBinding();
     }
