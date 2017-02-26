@@ -37,7 +37,6 @@ public final class PurchaseItemSideForm extends CssLayout {
     protected TextField price;
     protected TextField quantity;
     protected TextField subtotal;
-    protected TextField discount;
 
     protected Button save;
     protected Button cancel;
@@ -60,7 +59,6 @@ public final class PurchaseItemSideForm extends CssLayout {
         formLayout.addComponent(description = new TextField("Description"));
         formLayout.addComponent(price = new DecimalNumberField("Price"));
         formLayout.addComponent(quantity = new DecimalNumberField("Quantity"));
-        formLayout.addComponent(discount = new DecimalNumberField("Discount"));
         formLayout.addComponent(subtotal = new DecimalNumberField("Subtotal"));
         price.setConverter(BigDecimal.class);
         quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
@@ -79,7 +77,8 @@ public final class PurchaseItemSideForm extends CssLayout {
 
                     subtotal.setValue(nf.format(r.doubleValue()));
                     subtotal.setReadOnly(true);
-                } catch (ParseException ex) {
+                }
+                catch (ParseException ex) {
                     Logger.getLogger(PurchaseItemSideForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -95,7 +94,8 @@ public final class PurchaseItemSideForm extends CssLayout {
             try {
                 fieldGroup.commit();
                 viewLogic.updateItem(fieldGroup.getItemDataSource().getBean());
-            } catch (FieldGroup.CommitException e) {
+            }
+            catch (FieldGroup.CommitException e) {
                 e.printStackTrace(System.err);
             }
         });
@@ -119,13 +119,11 @@ public final class PurchaseItemSideForm extends CssLayout {
         productId.setValidationVisible(false);
         description.setValidationVisible(false);
         price.setValidationVisible(false);
-        discount.setValidationVisible(false);
         subtotal.setValidationVisible(false);
 
         productId.setReadOnly(true);
         description.setReadOnly(true);
         price.setReadOnly(true);
-        discount.setReadOnly(true);
         subtotal.setReadOnly(true);
 
         String scrollScript = "window.document.getElementById('" + getId()
@@ -153,7 +151,8 @@ public final class PurchaseItemSideForm extends CssLayout {
             try {
                 fieldGroup.commit();
                 // update grid item
-            } catch (FieldGroup.CommitException e) {
+            }
+            catch (FieldGroup.CommitException e) {
                 Notification n = new Notification(
                         "Please re-check the fields", Notification.Type.ERROR_MESSAGE);
                 n.setDelayMsec(500);
