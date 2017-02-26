@@ -6,7 +6,6 @@
 package ed.cracken.pos.ui.components;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.ErrorEvent;
 import com.vaadin.server.ErrorHandler;
@@ -16,8 +15,6 @@ import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import java.sql.SQLException;
-import javax.persistence.PersistenceException;
 
 /**
  *
@@ -41,14 +38,6 @@ public class EdErrorHandler implements ErrorHandler {
     }
 
     private static ErrorMessage getErrorMessageForException(Throwable t) {
-        PersistenceException persistenceException = getCauseOfType(t, PersistenceException.class);
-        if (persistenceException != null) {
-            return new UserError(persistenceException.getLocalizedMessage(), AbstractErrorMessage.ContentMode.TEXT, ErrorMessage.ErrorLevel.ERROR);
-        }
-        SQLException sqlException = getCauseOfType(t, SQLException.class);
-        if (sqlException != null) {
-            return new UserError(sqlException.toString()); //SQLErrorMessage(sqlException);
-        }
         FieldGroup.CommitException commitException = getCauseOfType(t, FieldGroup.CommitException.class);
         if (commitException != null) {
             return new UserError(commitException.toString());
