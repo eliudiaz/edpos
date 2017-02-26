@@ -5,6 +5,8 @@
  */
 package ed.cracken.pos.ui.seller;
 
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
@@ -12,6 +14,9 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import ed.cracken.pos.ui.components.DecimalNumberField;
+import ed.cracken.pos.ui.seller.to.SellPaymentTo;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,8 +24,9 @@ import ed.cracken.pos.ui.components.DecimalNumberField;
  */
 public final class SellerPaymentView extends Window {
 
-    private final DecimalNumberField txtCash;
-    private final DecimalNumberField txtCard;
+    private final DecimalNumberField cash;
+    private final DecimalNumberField card;
+    private BeanFieldGroup<SellPaymentTo> fieldGroup;
 
     public SellerPaymentView() {
         super("Forma de pago"); // Set window caption
@@ -34,12 +40,12 @@ public final class SellerPaymentView extends Window {
         content.addComponent(lyCash);
         content.addComponent(lyCard);
 
-        lyCash.addComponent(new Label("Efectivo: "));
+        lyCash.addComponent(new Label("Efectivo:"));
         lyCash.setSpacing(true);
-        lyCash.addComponent(txtCash = new DecimalNumberField());
+        lyCash.addComponent(cash = new DecimalNumberField());
 
-        lyCard.addComponent(new Label("Tarjeta: "));
-        lyCard.addComponent(txtCard = new DecimalNumberField());
+        lyCard.addComponent(new Label("Tarjeta:"));
+        lyCard.addComponent(card = new DecimalNumberField());
         lyCard.setSpacing(true);
 
         setContent(content);
@@ -55,11 +61,20 @@ public final class SellerPaymentView extends Window {
 
         Button ko = new Button("Cancelar");
         ok.addClickListener((ClickEvent event) -> {
-            close();
+            try {
+                fieldGroup.commit();
+                close();
+            }
+            catch (FieldGroup.CommitException ex) {
+                Logger.getLogger(SellerPaymentView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         lyButtons.addComponent(ko);
         lyButtons.setSpacing(true);
         content.addComponent(lyButtons);
+
+        fieldGroup = new BeanFieldGroup<>(SellPaymentTo.class);
+        fieldGroup.bindMemberFields(this);
 
     }
 
