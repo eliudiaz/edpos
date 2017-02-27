@@ -61,7 +61,6 @@ public final class SellerView extends CssLayout implements View {
         VerticalLayout transactionDetailArea = new VerticalLayout();
         HorizontalLayout foot;
         transactionDetailArea.addComponent(createTopBar());
-        newTransaction();
         transactionDetailArea.addComponent(grid);
         transactionDetailArea.addComponent(foot = createFooter());
         transactionDetailArea.setMargin(true);
@@ -72,6 +71,7 @@ public final class SellerView extends CssLayout implements View {
         transactionDetailArea.setComponentAlignment(foot, Alignment.TOP_CENTER);
         addComponent(transactionDetailArea);
         addComponent(sellItemForm = new SellItemForm(viewLogic));
+        newTransaction();
     }
 
     public void newTransaction() {
@@ -81,6 +81,7 @@ public final class SellerView extends CssLayout implements View {
                 .count(BigDecimal.ZERO)
                 .total(BigDecimal.ZERO)
                 .build();
+        updateTotals();
     }
 
     public void editItem(ItemTo item) {
@@ -109,6 +110,8 @@ public final class SellerView extends CssLayout implements View {
         grid.remove(item);
         sellItemForm.removeStyleName("visible");
         sellItemForm.setEnabled(false);
+        summary.setCount(summary.getCount().subtract(item.getQuantity()));
+        summary.setTotal(summary.getTotal().subtract(item.getSubtotal()));
     }
 
     /**
@@ -140,10 +143,11 @@ public final class SellerView extends CssLayout implements View {
         HorizontalLayout topLayout = new HorizontalLayout(txtProductCode, addProductBtn);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
+
         return topLayout;
     }
 
-    private void refreshInternal() {
+    private void updateTotals() {
         totalValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getTotal()) + "</strong></h2>");
         quantityValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getCount()) + "</strong></h2>");
     }
@@ -201,7 +205,7 @@ public final class SellerView extends CssLayout implements View {
         grid.add(item);
         summary.setCount(summary.getCount().add(item.getQuantity()));
         summary.setTotal(summary.getTotal().add(item.getSubtotal()));
-        refreshInternal();
+        updateTotals();
     }
 
     public SellTransactionTo getTransaction() {
@@ -210,6 +214,7 @@ public final class SellerView extends CssLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        //after view launched
     }
 
 }
