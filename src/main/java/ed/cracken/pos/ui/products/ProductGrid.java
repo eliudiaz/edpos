@@ -5,8 +5,8 @@ import ed.cracken.pos.ui.components.CollectionToStringConverter;
 import java.util.Collection;
 import java.util.Locale;
 
-import org.vaadin.mockapp.samples.backend.data.Availability;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Availability;
+import ed.cracken.pos.backend.model.Product;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;

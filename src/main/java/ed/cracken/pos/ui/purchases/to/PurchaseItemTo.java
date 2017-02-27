@@ -3,34 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ed.cracken.pos.ui.seller.to;
+package ed.cracken.pos.ui.purchases.to;
 
+import ed.cracken.pos.backend.model.Product;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ed.cracken.pos.backend.model.Product;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
-@Setter
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
-public class ItemTo {
+public class PurchaseItemTo {
 
-    private String productId;
-    private String description;
+    private Product product;
+    private String code;
+    private String name;
     private BigDecimal price;
     private BigDecimal quantity;
     private BigDecimal subtotal;
-    private BigDecimal discount;
-    private Product product;
 
-    public ItemTo() {
+    public PurchaseItemTo() {
     }
 
 }

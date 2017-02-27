@@ -4,7 +4,7 @@ import com.vaadin.event.FieldEvents;
 import java.util.Collection;
 
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Product;
 
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;

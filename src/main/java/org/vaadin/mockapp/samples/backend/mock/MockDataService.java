@@ -3,8 +3,10 @@ package org.vaadin.mockapp.samples.backend.mock;
 import java.util.List;
 
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Category;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Category;
+import ed.cracken.pos.backend.model.Product;
+import ed.cracken.pos.backend.model.Provider;
+import java.util.Collection;
 
 /**
  * Mock data model. This implementation has very simplistic locking and does not
@@ -14,14 +16,16 @@ public class MockDataService extends DataService {
 
     private static MockDataService INSTANCE;
 
-    private List<Product> products;
-    private List<Category> categories;
+    private final List<Product> products;
+    private final List<Category> categories;
+    private final List<Provider> providers;
     private int nextProductId = 0;
 
     private MockDataService() {
         categories = MockDataGenerator.createCategories();
         products = MockDataGenerator.createProducts(categories);
         nextProductId = products.size() + 1;
+        providers = MockDataGenerator.createProviders();
     }
 
     public synchronized static DataService getInstance() {
@@ -78,5 +82,10 @@ public class MockDataService extends DataService {
                     + " not found");
         }
         products.remove(p);
+    }
+
+    @Override
+    public synchronized Collection<Provider> getAllProviders() {
+        return providers;
     }
 }

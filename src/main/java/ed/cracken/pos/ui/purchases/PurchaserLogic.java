@@ -5,14 +5,15 @@
  */
 package ed.cracken.pos.ui.purchases;
 
-import ed.cracken.pos.ui.seller.*;
 import ed.cracken.pos.exception.ProductNotFoundException;
-import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Product;
+import ed.cracken.pos.backend.model.Provider;
+import ed.cracken.pos.exception.ProviderNotFoundException;
 
 /**
  *
@@ -21,13 +22,13 @@ import org.vaadin.mockapp.samples.backend.data.Product;
 public class PurchaserLogic {
 
     private final PurchaserView view;
-    private final List<ItemTo> items = new LinkedList<>();
+    private final List<PurchaseItemTo> items = new LinkedList<>();
 
     public PurchaserLogic(PurchaserView view) {
         this.view = view;
     }
 
-    public void editItem(ItemTo item) {
+    public void editItem(PurchaseItemTo item) {
         view.editItem(item);
     }
 
@@ -37,19 +38,37 @@ public class PurchaserLogic {
      * @param product
      */
     public void addItem(Product product) {
-        ItemTo item = ItemTo.builder()
-                .description(product.getProductName())
+        PurchaseItemTo item = PurchaseItemTo.builder()
+                .name(product.getProductName())
                 .price(product.getPrice())
                 .quantity(BigDecimal.ONE)
                 .product(product)
-                .discount(BigDecimal.ZERO)
-                .subtotal(product.getPrice().multiply(BigDecimal.ONE))
                 .build();
         view.addItem(item);
         items.add(item);
     }
 
-    public void updateItem(ItemTo item) {
+    /**
+     * affects grid & footer
+     *
+     * @param product
+     */
+    public void addItem(PurchaseItemTo item) {
+        view.addItem(item);
+        items.add(item);
+    }
+
+    public void showItem(Product product) {
+        PurchaseItemTo item = PurchaseItemTo.builder()
+                .name(product.getProductName())
+                .price(product.getPrice())
+                .quantity(BigDecimal.ONE)
+                .product(product)
+                .build();
+        view.showItem(item);
+    }
+
+    public void updateItem(PurchaseItemTo item) {
         view.updateItem(item);
     }
 
@@ -57,17 +76,26 @@ public class PurchaserLogic {
         view.cancelItemEdit();
     }
 
-    /**
-     * affects grid & footer
-     *
-     * @param item
-     */
-    public void removeItem(ItemTo item) {
+    public void removeItem(PurchaseItemTo item) {
         view.removeItem(item);
     }
 
     public void findAndAddProduct(String code) {
         addItem(findProduct(code));
+    }
+
+    public Provider findProvider(String code) {
+        return DataService.get().getAllProviders().stream().filter(p -> p.getId().equalsIgnoreCase(code))
+                .findFirst()
+                .orElseThrow(ProviderNotFoundException::new);
+    }
+
+    public void setProvider(Provider provider) {
+        view.setProvider(provider);
+    }
+
+    public void findAndShowProduct(String code) {
+        showItem(findProduct(code));
     }
 
     private Product findProduct(String code) {

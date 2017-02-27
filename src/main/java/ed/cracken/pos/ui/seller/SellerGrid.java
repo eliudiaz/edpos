@@ -74,6 +74,10 @@ public final class SellerGrid extends Grid {
         getContainer().addAll(items);
     }
 
+    public Collection<ItemTo> getItems() {
+        return getContainer().getItemIds();
+    }
+
     @Override
     public ItemTo getSelectedRow() throws IllegalStateException {
         return (ItemTo) super.getSelectedRow();

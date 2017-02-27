@@ -11,7 +11,9 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Product;
+import ed.cracken.pos.ui.seller.to.SellPaymentTo;
+import ed.cracken.pos.ui.seller.to.SellTransactionTo;
 
 /**
  *
@@ -75,6 +77,10 @@ public class SellerLogic {
                 .filter(p -> p.getId().equals(Integer.valueOf(code)))
                 .findFirst()
                 .orElseThrow(ProductNotFoundException::new);
+    }
+
+    public void saveSell(SellPaymentTo payment) {
+        SellTransactionTo transaction = view.getTransaction();
     }
 
 }

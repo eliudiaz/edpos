@@ -21,9 +21,9 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
 import org.vaadin.mockapp.samples.backend.DataService;
-import org.vaadin.mockapp.samples.backend.data.Availability;
-import org.vaadin.mockapp.samples.backend.data.Category;
-import org.vaadin.mockapp.samples.backend.data.Product;
+import ed.cracken.pos.backend.model.Availability;
+import ed.cracken.pos.backend.model.Category;
+import ed.cracken.pos.backend.model.Product;
 
 /**
  *

@@ -5,21 +5,100 @@
  */
 package ed.cracken.pos.ui.purchases;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.server.UserError;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.vaadin.ui.VerticalLayout;
+import ed.cracken.pos.backend.model.Provider;
+import ed.cracken.pos.exception.ProviderNotFoundException;
+import ed.cracken.pos.ui.purchases.to.PurchaseTo;
+import static ed.cracken.pos.ui.helpers.UIHelper.buildComponentsRow;
 
 /**
  *
  * @author edcracken
  */
-@Getter
-@AllArgsConstructor
-public class PurchaseHeaderForm {
+public final class PurchaseHeaderForm extends CssLayout {
 
-    private final TextField providerCode;
-    private final TextField name;
-    private final TextField documentNumber;
-    private final TextField documentLetter;
-    private final TextField documentDate;
+    protected TextField providerId;
+    protected TextField providerName;
+    protected TextField documentNumber;
+    protected DateField documentDate;
+    protected PurchaseHeaderForm form;
+    private BeanFieldGroup<PurchaseTo> fieldGroup;
+    private PurchaseTo purchase;
+
+    public PurchaseHeaderForm(PurchaserLogic viewLogic) {
+        VerticalLayout formLayout = new VerticalLayout();
+        formLayout.setHeightUndefined();
+        formLayout.setSpacing(true);
+        formLayout.setStyleName("form-layout");
+        formLayout.addComponent(buildComponentsRow(providerId = new TextField("Codigo Proveedor:"),
+                providerName = new TextField("Nombre Proveedor"),
+                documentNumber = new TextField("No. Factura"),
+                documentDate = new DateField("Fecha Factura")));
+        providerName.setReadOnly(true);
+
+        addComponent(formLayout);
+        providerId.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            if (!event.getText().isEmpty()) {
+                try {
+                    providerName.setReadOnly(false);
+                    viewLogic.setProvider(viewLogic.findProvider(event.getText()));
+                    providerId.setComponentError(null);
+                    providerName.setReadOnly(true);
+                }
+                catch (ProviderNotFoundException p) {
+                    viewLogic.setProvider(null);
+                    providerId.setComponentError(new UserError(p.getMessage()));
+                }
+            }
+        });
+
+        purchase = PurchaseTo
+                .builder()
+                .providerId("")
+                .providerName("")
+                .documentNumber("")
+                .build();
+        configBinding();
+    }
+
+    public void setProvider(Provider provider) {
+        if (provider == null) {
+            purchase.setProviderId("");
+            purchase.setProviderName("");
+        } else {
+            purchase.setProvider(provider);
+            purchase.setProviderId(provider.getId());
+            purchase.setProviderName(provider.getName());
+        }
+        fieldGroup.setItemDataSource(purchase);
+    }
+
+    public PurchaseTo getPurchaseHeader() {
+        return fieldGroup.getItemDataSource().getBean();
+    }
+
+    private void formHasChanged() {
+        providerName.setValidationVisible(true);
+    }
+
+    private void configBinding() {
+        fieldGroup = new BeanFieldGroup<>(PurchaseTo.class);
+        fieldGroup.bindMemberFields(this);
+        fieldGroup.setItemDataSource(purchase);
+        Property.ValueChangeListener valueListener = (Property.ValueChangeEvent event) -> {
+            formHasChanged();
+        };
+        fieldGroup.getFields().stream().forEach((f) -> {
+            f.addValueChangeListener(valueListener);
+        });
+
+    }
+
 }

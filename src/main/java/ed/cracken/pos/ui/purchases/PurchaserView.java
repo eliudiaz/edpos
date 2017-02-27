@@ -5,23 +5,23 @@
  */
 package ed.cracken.pos.ui.purchases;
 
-import com.vaadin.event.FieldEvents;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import ed.cracken.pos.backend.model.Provider;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
-import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import ed.cracken.pos.ui.seller.to.SellSummaryTo;
 import java.math.BigDecimal;
 
@@ -33,33 +33,26 @@ public final class PurchaserView extends CssLayout implements View {
 
     public static final String VIEW_NAME = "Compras";
 
-    //purchase information
-    private TextField providerCode;
-    private TextField providerName;
-    private TextField documentNumber;
-    private TextField documentDate;
-
-    // product information
-    private TextField productCode;
-    private TextField productName;
-    private TextField productPrice;
-    private TextField productQuantity;
     private Label total;
     private Label totalValue;
     private Label quantity;
     private Label quantityValue;
-    private Button addProductBtn;
     private Button saveTrx;
     private Button cancelTrx;
     private final PurchaserGrid grid;
     private final PurchaserLogic viewLogic;
     private final SellSummaryTo summary;
     private final PurchaserPaymentView paymentView;
-    private final PurchaseItemForm purchaseItemForm;
+    private final PurchaseItemSideForm purchaseItemSideForm;
+    private PurchaseHeaderItemForm purchaseItemForm;
+    private PurchaseHeaderForm purchaseHeaderForm;
 
     public PurchaserView() {
 
-        summary = SellSummaryTo.builder().count(BigDecimal.ZERO).total(BigDecimal.ZERO).build();
+        summary = SellSummaryTo
+                .builder()
+                .count(BigDecimal.ZERO)
+                .total(BigDecimal.ZERO).build();
         setSizeFull();
         addStyleName("crud-view");
         viewLogic = new PurchaserLogic(this);
@@ -70,46 +63,50 @@ public final class PurchaserView extends CssLayout implements View {
         });
 
         VerticalLayout mainContent = new VerticalLayout();
-        HorizontalLayout foot;
-        mainContent.addComponent(createTopBar());
+        AbstractOrderedLayout foot, top;
+        mainContent.addComponent(top = createTopBar());
         mainContent.addComponent(grid);
         mainContent.addComponent(foot = createFooter());
         mainContent.setMargin(true);
-        mainContent.setSpacing(true);
         mainContent.setSizeFull();
         mainContent.setExpandRatio(grid, 1);
         mainContent.setStyleName("crud-main-layout");
         mainContent.setComponentAlignment(foot, Alignment.TOP_CENTER);
+        mainContent.setComponentAlignment(top, Alignment.TOP_LEFT);
         addComponent(mainContent);
-        addComponent(purchaseItemForm = new PurchaseItemForm(viewLogic));
+        addComponent(purchaseItemSideForm = new PurchaseItemSideForm(viewLogic));
     }
 
-    public void editItem(ItemTo item) {
+    public void setProvider(Provider provider) {
+        purchaseHeaderForm.setProvider(provider);
+    }
+
+    public void editItem(PurchaseItemTo item) {
         if (item != null) {
-            purchaseItemForm.addStyleName("visible");
-            purchaseItemForm.setEnabled(true);
+            purchaseItemSideForm.addStyleName("visible");
+            purchaseItemSideForm.setEnabled(true);
         } else {
-            purchaseItemForm.removeStyleName("visible");
-            purchaseItemForm.setEnabled(false);
+            purchaseItemSideForm.removeStyleName("visible");
+            purchaseItemSideForm.setEnabled(false);
         }
-        purchaseItemForm.editItem(item);
+        purchaseItemSideForm.editItem(item);
     }
 
-    public void updateItem(ItemTo item) {
+    public void updateItem(PurchaseItemTo item) {
         grid.refresh(item);
-        purchaseItemForm.removeStyleName("visible");
-        purchaseItemForm.setEnabled(false);
+        purchaseItemSideForm.removeStyleName("visible");
+        purchaseItemSideForm.setEnabled(false);
     }
 
     public void cancelItemEdit() {
-        purchaseItemForm.removeStyleName("visible");
-        purchaseItemForm.setEnabled(false);
+        purchaseItemSideForm.removeStyleName("visible");
+        purchaseItemSideForm.setEnabled(false);
     }
 
-    public void removeItem(ItemTo item) {
+    public void removeItem(PurchaseItemTo item) {
         grid.remove(item);
-        purchaseItemForm.removeStyleName("visible");
-        purchaseItemForm.setEnabled(false);
+        purchaseItemSideForm.removeStyleName("visible");
+        purchaseItemSideForm.setEnabled(false);
     }
 
     /**
@@ -117,40 +114,17 @@ public final class PurchaserView extends CssLayout implements View {
      *
      * @return
      */
-    public HorizontalLayout createTopBar() {
-
-        productCode = new TextField();
-        productCode.setStyleName("filter-textfield");
-        productCode.setInputPrompt("Codigo Producto");
-        productCode.setImmediate(true);
-        productCode.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
-            if (!event.getText().isEmpty()) {
-                viewLogic.findAndAddProduct(event.getText());
-            }
-        });
-
-        productName = new TextField();
-        productPrice = new TextField();
-        productQuantity = new TextField();
-
-        addProductBtn = new Button("Buscar");
-        addProductBtn.setIcon(FontAwesome.SEARCH);
-        addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
-        addProductBtn.addClickListener((Button.ClickEvent event) -> {
-            if (!productCode.getValue().isEmpty()) {
-                viewLogic.findAndAddProduct(productCode.getValue());
-            }
-        });
-
-        HorizontalLayout topLayout = new HorizontalLayout(productCode, addProductBtn);
+    public VerticalLayout createTopBar() {
+        purchaseHeaderForm = new PurchaseHeaderForm(viewLogic);
+        purchaseItemForm = new PurchaseHeaderItemForm(viewLogic);
+        VerticalLayout topLayout = new VerticalLayout(purchaseHeaderForm,
+                purchaseItemForm);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
         return topLayout;
     }
 
     private void refreshInternal() {
-
         totalValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getTotal()) + "</strong></h2>");
         quantityValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getCount()) + "</strong></h2>");
     }
@@ -175,24 +149,25 @@ public final class PurchaserView extends CssLayout implements View {
         cancelTrx = new Button("Cancelar", FontAwesome.CLOSE);
         cancelTrx.addStyleName(ValoTheme.BUTTON_DANGER);
         cancelTrx.setHeight("60px");
-        HorizontalLayout bottom = new HorizontalLayout();
+
         HorizontalLayout labelsArea = new HorizontalLayout();
-        HorizontalLayout buttonsArea = new HorizontalLayout();
 
         labelsArea.setSpacing(true);
         labelsArea.addComponent(total);
         labelsArea.addComponent(totalValue);
         labelsArea.addComponent(quantity);
         labelsArea.addComponent(quantityValue);
-
         labelsArea.setComponentAlignment(total, Alignment.MIDDLE_LEFT);
         labelsArea.setComponentAlignment(totalValue, Alignment.MIDDLE_LEFT);
         labelsArea.setComponentAlignment(quantity, Alignment.MIDDLE_RIGHT);
         labelsArea.setComponentAlignment(quantityValue, Alignment.MIDDLE_RIGHT);
 
+        HorizontalLayout buttonsArea = new HorizontalLayout();
         buttonsArea.setSpacing(true);
         buttonsArea.addComponent(saveTrx);
         buttonsArea.addComponent(cancelTrx);
+
+        HorizontalLayout bottom = new HorizontalLayout();
         bottom.setSpacing(true);
         bottom.addComponent(buttonsArea);
         bottom.addComponent(labelsArea);
@@ -203,15 +178,15 @@ public final class PurchaserView extends CssLayout implements View {
         return bottom;
     }
 
-    public void addItem(ItemTo item) {
+    public void addItem(PurchaseItemTo item) {
         grid.add(item);
         summary.setCount(summary.getCount().add(item.getQuantity()));
         summary.setTotal(summary.getTotal().add(item.getSubtotal()));
         refreshInternal();
     }
 
-    private void refreshFooter() {
-
+    public void showItem(PurchaseItemTo item) {
+        purchaseItemForm.setItem(item);
     }
 
     /**

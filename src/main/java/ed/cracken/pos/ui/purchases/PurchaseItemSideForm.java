@@ -18,7 +18,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.components.StyledButton;
-import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.purchases.to.PurchaseItemTo;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -30,24 +30,23 @@ import java.util.logging.Logger;
  *
  * @author edcracken
  */
-public final class PurchaseItemForm extends CssLayout {
+public final class PurchaseItemSideForm extends CssLayout {
 
     protected TextField productId;
     protected TextField description;
     protected TextField price;
     protected TextField quantity;
     protected TextField subtotal;
-    protected TextField discount;
 
     protected Button save;
     protected Button cancel;
     protected Button delete;
 
-    protected PurchaseItemForm form;
+    protected PurchaseItemSideForm form;
 
-    private BeanFieldGroup<ItemTo> fieldGroup;
+    private BeanFieldGroup<PurchaseItemTo> fieldGroup;
 
-    public PurchaseItemForm(PurchaserLogic viewLogic) {
+    public PurchaseItemSideForm(PurchaserLogic viewLogic) {
 
         setId("product-form");
         setStyleName("product-form-wrapper");
@@ -60,7 +59,6 @@ public final class PurchaseItemForm extends CssLayout {
         formLayout.addComponent(description = new TextField("Description"));
         formLayout.addComponent(price = new DecimalNumberField("Price"));
         formLayout.addComponent(quantity = new DecimalNumberField("Quantity"));
-        formLayout.addComponent(discount = new DecimalNumberField("Discount"));
         formLayout.addComponent(subtotal = new DecimalNumberField("Subtotal"));
         price.setConverter(BigDecimal.class);
         quantity.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
@@ -69,7 +67,7 @@ public final class PurchaseItemForm extends CssLayout {
                     NumberFormat nf = DecimalFormat.getInstance();
                     nf.setMaximumFractionDigits(2);
 
-                    ItemTo item;
+                    PurchaseItemTo item;
                     BigDecimal r = BigDecimal
                             .valueOf(nf
                                     .parse(event.getText()).longValue())
@@ -79,8 +77,9 @@ public final class PurchaseItemForm extends CssLayout {
 
                     subtotal.setValue(nf.format(r.doubleValue()));
                     subtotal.setReadOnly(true);
-                } catch (ParseException ex) {
-                    Logger.getLogger(PurchaseItemForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                catch (ParseException ex) {
+                    Logger.getLogger(PurchaseItemSideForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -95,7 +94,8 @@ public final class PurchaseItemForm extends CssLayout {
             try {
                 fieldGroup.commit();
                 viewLogic.updateItem(fieldGroup.getItemDataSource().getBean());
-            } catch (FieldGroup.CommitException e) {
+            }
+            catch (FieldGroup.CommitException e) {
                 e.printStackTrace(System.err);
             }
         });
@@ -110,22 +110,20 @@ public final class PurchaseItemForm extends CssLayout {
         configBinding();
     }
 
-    public void editItem(ItemTo product) {
+    public void editItem(PurchaseItemTo product) {
         if (product == null) {
-            product = new ItemTo();
+            product = new PurchaseItemTo();
         }
-        fieldGroup.setItemDataSource(new BeanItem<ItemTo>(product));
+        fieldGroup.setItemDataSource(new BeanItem<PurchaseItemTo>(product));
 
         productId.setValidationVisible(false);
         description.setValidationVisible(false);
         price.setValidationVisible(false);
-        discount.setValidationVisible(false);
         subtotal.setValidationVisible(false);
 
         productId.setReadOnly(true);
         description.setReadOnly(true);
         price.setReadOnly(true);
-        discount.setReadOnly(true);
         subtotal.setReadOnly(true);
 
         String scrollScript = "window.document.getElementById('" + getId()
@@ -139,7 +137,7 @@ public final class PurchaseItemForm extends CssLayout {
     }
 
     private void configBinding() {
-        fieldGroup = new BeanFieldGroup<>(ItemTo.class);
+        fieldGroup = new BeanFieldGroup<>(PurchaseItemTo.class);
         fieldGroup.bindMemberFields(this);
 
         Property.ValueChangeListener valueListener = (Property.ValueChangeEvent event) -> {
@@ -153,7 +151,8 @@ public final class PurchaseItemForm extends CssLayout {
             try {
                 fieldGroup.commit();
                 // update grid item
-            } catch (FieldGroup.CommitException e) {
+            }
+            catch (FieldGroup.CommitException e) {
                 Notification n = new Notification(
                         "Please re-check the fields", Notification.Type.ERROR_MESSAGE);
                 n.setDelayMsec(500);
