@@ -71,6 +71,7 @@ public final class SellerPaymentView extends Window {
             try {
                 fieldGroup.commit();
                 close();
+                viewLogic.saveSell(fieldGroup.getItemDataSource().getBean());
             }
             catch (FieldGroup.CommitException ex) {
                 Logger.getLogger(SellerPaymentView.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,15 +80,7 @@ public final class SellerPaymentView extends Window {
         lyButtons.addComponent(ok);
 
         Button ko = new Button("Cancelar");
-        ok.addClickListener((ClickEvent event) -> {
-            try {
-                fieldGroup.commit();
-                close();
-            }
-            catch (FieldGroup.CommitException ex) {
-                Logger.getLogger(SellerPaymentView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        ok.addClickListener((ClickEvent event) -> Window::close);
         lyButtons.addComponent(ko);
         lyButtons.setSpacing(true);
         content.addComponent(lyButtons);

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.vaadin.mockapp.samples.backend.DataService;
 import ed.cracken.pos.backend.model.Product;
+import ed.cracken.pos.ui.helpers.NotificationsHelper;
 import ed.cracken.pos.ui.seller.to.SellPaymentTo;
 import ed.cracken.pos.ui.seller.to.SellTransactionTo;
 
@@ -81,6 +82,8 @@ public class SellerLogic {
 
     public void saveSell(SellPaymentTo payment) {
         SellTransactionTo transaction = view.getTransaction();
+        NotificationsHelper.showSaveNotification("Transaction finalizada!");
+        view.newTransaction();
     }
 
 }

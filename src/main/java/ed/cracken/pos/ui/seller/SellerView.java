@@ -26,7 +26,6 @@ import ed.cracken.pos.ui.seller.to.SellPaymentTo;
 import ed.cracken.pos.ui.seller.to.SellSummaryTo;
 import ed.cracken.pos.ui.seller.to.SellTransactionTo;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  *
@@ -37,7 +36,7 @@ public final class SellerView extends CssLayout implements View {
     public static final String VIEW_NAME = "Ventas";
 
     private Button addProductBtn;
-    private TextField productCode;
+    private TextField txtProductCode;
 
     private Label total;
     private Label totalValue;
@@ -45,35 +44,52 @@ public final class SellerView extends CssLayout implements View {
     private Label quantityValue;
     private Button saveTrx;
     private Button cancelTrx;
-    private final SellerGrid grid;
+    private SellerGrid grid;
+    private SellSummaryTo summary;
     private final SellerLogic viewLogic;
-    private final SellSummaryTo summary;
     private final SellItemForm sellItemForm;
 
-    public SellerView() {
-
-        summary = SellSummaryTo.builder().count(BigDecimal.ZERO).total(BigDecimal.ZERO).build();
-        setSizeFull();
-        addStyleName("crud-view");
-        viewLogic = new SellerLogic(this);
+    private void initGrid() {
         grid = new SellerGrid();
         grid.addSelectionListener((SelectionEvent event) -> {
             viewLogic.editItem(grid.getSelectedRow());
         });
+    }
 
-        VerticalLayout barAndGridLayout = new VerticalLayout();
+    public SellerView() {
+        setSizeFull();
+        addStyleName("crud-view");
+        viewLogic = new SellerLogic(this);
+
+        VerticalLayout transactionDetailArea = new VerticalLayout();
         HorizontalLayout foot;
-        barAndGridLayout.addComponent(createTopBar());
-        barAndGridLayout.addComponent(grid);
-        barAndGridLayout.addComponent(foot = createFooter());
-        barAndGridLayout.setMargin(true);
-        barAndGridLayout.setSpacing(true);
-        barAndGridLayout.setSizeFull();
-        barAndGridLayout.setExpandRatio(grid, 1);
-        barAndGridLayout.setStyleName("crud-main-layout");
-        barAndGridLayout.setComponentAlignment(foot, Alignment.TOP_CENTER);
-        addComponent(barAndGridLayout);
+        transactionDetailArea.addComponent(createTopBar());
+        initGrid();
+        initTransaction();
+        transactionDetailArea.addComponent(grid);
+        transactionDetailArea.addComponent(foot = createFooter());
+        transactionDetailArea.setMargin(true);
+        transactionDetailArea.setSpacing(true);
+        transactionDetailArea.setSizeFull();
+        transactionDetailArea.setExpandRatio(grid, 1);
+        transactionDetailArea.setStyleName("crud-main-layout");
+        transactionDetailArea.setComponentAlignment(foot, Alignment.TOP_CENTER);
+        addComponent(transactionDetailArea);
         addComponent(sellItemForm = new SellItemForm(viewLogic));
+
+    }
+
+    private void initTransaction() {
+        txtProductCode.setValue("");
+        summary = SellSummaryTo.builder()
+                .count(BigDecimal.ZERO)
+                .total(BigDecimal.ZERO)
+                .build();
+    }
+
+    public void newTransaction() {
+        initGrid();
+        initTransaction();
     }
 
     public void editItem(ItemTo item) {
@@ -110,11 +126,11 @@ public final class SellerView extends CssLayout implements View {
      * @return
      */
     public HorizontalLayout createTopBar() {
-        productCode = new TextField();
-        productCode.setStyleName("filter-textfield");
-        productCode.setInputPrompt("Codigo Producto");
-        productCode.setImmediate(true);
-        productCode.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+        txtProductCode = new TextField();
+        txtProductCode.setStyleName("filter-textfield");
+        txtProductCode.setInputPrompt("Codigo Producto");
+        txtProductCode.setImmediate(true);
+        txtProductCode.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             if (!event.getText().isEmpty()) {
                 viewLogic.findAndAddProduct(event.getText());
             }
@@ -125,12 +141,12 @@ public final class SellerView extends CssLayout implements View {
         addProductBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
         addProductBtn.setIcon(FontAwesome.PLUS_CIRCLE);
         addProductBtn.addClickListener((Button.ClickEvent event) -> {
-            if (!productCode.getValue().isEmpty()) {
-                viewLogic.findAndAddProduct(productCode.getValue());
+            if (!txtProductCode.getValue().isEmpty()) {
+                viewLogic.findAndAddProduct(txtProductCode.getValue());
             }
         });
 
-        HorizontalLayout topLayout = new HorizontalLayout(productCode, addProductBtn);
+        HorizontalLayout topLayout = new HorizontalLayout(txtProductCode, addProductBtn);
         topLayout.setStyleName("top-bar");
         topLayout.setSpacing(true);
         return topLayout;
@@ -201,16 +217,8 @@ public final class SellerView extends CssLayout implements View {
         return new SellTransactionTo(summary, grid.getItems());
     }
 
-    /**
-     *
-     */
-    public void createFootBar() {
-        saveTrx = new Button("Grabar");
-    }
-
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        System.out.println(">> entered");
     }
 
 }
