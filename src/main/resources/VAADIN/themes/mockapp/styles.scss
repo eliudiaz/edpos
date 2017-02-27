@@ -8,6 +8,11 @@ $v-layout-margin: $v-layout-margin-top $v-layout-margin-right $v-layout-margin-b
 // The actual styles should be defined in mockapp.scss
 
 .mockapp {
-  @include addons;
-  @include mockapp;
+    @include addons;
+    @include mockapp;
+}
+
+#subtotal{
+    font-size: 18px;
+    font-weight: bold;
 }

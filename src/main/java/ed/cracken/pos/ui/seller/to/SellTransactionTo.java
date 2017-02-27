@@ -5,7 +5,8 @@
  */
 package ed.cracken.pos.ui.seller.to;
 
-import java.math.BigDecimal;
+import java.util.Collection;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +16,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SellPaymentTo {
+@AllArgsConstructor
+public class SellTransactionTo {
 
-    private BigDecimal cash = BigDecimal.ZERO;
-    private BigDecimal card = BigDecimal.ZERO;
-    private BigDecimal subtotal;
-
-    public SellPaymentTo(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
-
+    private SellSummaryTo summary;
+    private Collection<ItemTo> items;
 }

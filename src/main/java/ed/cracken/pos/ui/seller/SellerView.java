@@ -22,8 +22,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
 import ed.cracken.pos.ui.seller.to.ItemTo;
+import ed.cracken.pos.ui.seller.to.SellPaymentTo;
 import ed.cracken.pos.ui.seller.to.SellSummaryTo;
+import ed.cracken.pos.ui.seller.to.SellTransactionTo;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -45,7 +48,6 @@ public final class SellerView extends CssLayout implements View {
     private final SellerGrid grid;
     private final SellerLogic viewLogic;
     private final SellSummaryTo summary;
-    private final SellerPaymentView paymentView;
     private final SellItemForm sellItemForm;
 
     public SellerView() {
@@ -54,7 +56,6 @@ public final class SellerView extends CssLayout implements View {
         setSizeFull();
         addStyleName("crud-view");
         viewLogic = new SellerLogic(this);
-        paymentView = new SellerPaymentView();
         grid = new SellerGrid();
         grid.addSelectionListener((SelectionEvent event) -> {
             viewLogic.editItem(grid.getSelectedRow());
@@ -136,7 +137,6 @@ public final class SellerView extends CssLayout implements View {
     }
 
     private void refreshInternal() {
-
         totalValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getTotal()) + "</strong></h2>");
         quantityValue.setValue("<h2><strong>" + DataFormatHelper.formatNumber(summary.getCount()) + "</strong></h2>");
     }
@@ -156,7 +156,8 @@ public final class SellerView extends CssLayout implements View {
         saveTrx.addStyleName(ValoTheme.BUTTON_PRIMARY);
         saveTrx.setHeight("60px");
         saveTrx.addClickListener((Button.ClickEvent event) -> {
-            UI.getCurrent().addWindow(paymentView);
+            UI.getCurrent().addWindow(
+                    new SellerPaymentView(new SellPaymentTo(summary.getTotal()), viewLogic));
         });
         cancelTrx = new Button("Cancelar", FontAwesome.CLOSE);
         cancelTrx.addStyleName(ValoTheme.BUTTON_DANGER);
@@ -196,8 +197,8 @@ public final class SellerView extends CssLayout implements View {
         refreshInternal();
     }
 
-    private void refreshFooter() {
-
+    public SellTransactionTo getTransaction() {
+        return new SellTransactionTo(summary, grid.getItems());
     }
 
     /**
