@@ -80,7 +80,7 @@ public class SellerLogic {
                 .orElseThrow(ProductNotFoundException::new);
     }
 
-    public void saveSell(SellPaymentTo payment) {
+    public void save(SellPaymentTo payment) {
         SellTransactionTo transaction = view.getTransaction();
         NotificationsHelper.showSaveNotification("Transaction finalizada!");
         view.newTransaction();

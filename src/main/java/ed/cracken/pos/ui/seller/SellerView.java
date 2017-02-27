@@ -49,23 +49,19 @@ public final class SellerView extends CssLayout implements View {
     private final SellerLogic viewLogic;
     private final SellItemForm sellItemForm;
 
-    private void initGrid() {
+    public SellerView() {
+        setSizeFull();
+        addStyleName("crud-view");
+
+        viewLogic = new SellerLogic(this);
         grid = new SellerGrid();
         grid.addSelectionListener((SelectionEvent event) -> {
             viewLogic.editItem(grid.getSelectedRow());
         });
-    }
-
-    public SellerView() {
-        setSizeFull();
-        addStyleName("crud-view");
-        viewLogic = new SellerLogic(this);
-
         VerticalLayout transactionDetailArea = new VerticalLayout();
         HorizontalLayout foot;
         transactionDetailArea.addComponent(createTopBar());
-        initGrid();
-        initTransaction();
+        newTransaction();
         transactionDetailArea.addComponent(grid);
         transactionDetailArea.addComponent(foot = createFooter());
         transactionDetailArea.setMargin(true);
@@ -76,20 +72,15 @@ public final class SellerView extends CssLayout implements View {
         transactionDetailArea.setComponentAlignment(foot, Alignment.TOP_CENTER);
         addComponent(transactionDetailArea);
         addComponent(sellItemForm = new SellItemForm(viewLogic));
-
     }
 
-    private void initTransaction() {
+    public void newTransaction() {
         txtProductCode.setValue("");
+        grid.getContainerDataSource().removeAllItems();
         summary = SellSummaryTo.builder()
                 .count(BigDecimal.ZERO)
                 .total(BigDecimal.ZERO)
                 .build();
-    }
-
-    public void newTransaction() {
-        initGrid();
-        initTransaction();
     }
 
     public void editItem(ItemTo item) {

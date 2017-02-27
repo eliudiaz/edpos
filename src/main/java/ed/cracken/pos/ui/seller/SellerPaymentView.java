@@ -27,13 +27,11 @@ public final class SellerPaymentView extends Window {
 
     private final DecimalNumberField cash;
     private final DecimalNumberField card;
-    private final SellerLogic viewLogic;
     private BeanFieldGroup<SellPaymentTo> fieldGroup;
 
-    public SellerPaymentView(SellPaymentTo paymentTo, SellerLogic viewLogic) {
+    public SellerPaymentView(SellPaymentTo paymentTo, SellerLogic sellerView) {
         super("Forma de pago"); // Set window caption
         center();
-        this.viewLogic = viewLogic;
         VerticalLayout content = new VerticalLayout();
         content.setMargin(true);
         content.setSpacing(true);
@@ -71,7 +69,7 @@ public final class SellerPaymentView extends Window {
             try {
                 fieldGroup.commit();
                 close();
-                viewLogic.saveSell(fieldGroup.getItemDataSource().getBean());
+                sellerView.save(fieldGroup.getItemDataSource().getBean());
             }
             catch (FieldGroup.CommitException ex) {
                 Logger.getLogger(SellerPaymentView.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,7 +78,9 @@ public final class SellerPaymentView extends Window {
         lyButtons.addComponent(ok);
 
         Button ko = new Button("Cancelar");
-        ok.addClickListener((ClickEvent event) -> Window::close);
+        ok.addClickListener((ClickEvent event) -> {
+            this.close();
+        });
         lyButtons.addComponent(ko);
         lyButtons.setSpacing(true);
         content.addComponent(lyButtons);
