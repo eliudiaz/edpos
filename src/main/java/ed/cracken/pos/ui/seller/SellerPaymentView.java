@@ -7,6 +7,9 @@ package ed.cracken.pos.ui.seller;
 
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
@@ -51,6 +54,14 @@ public final class SellerPaymentView extends Window {
         lyCard.addComponent(card = new DecimalNumberField());
         lyCard.setSpacing(true);
 
+        card.addTextChangeListener(this::checkTotals);
+        cash.addTextChangeListener(this::checkTotals);
+        cash.addShortcutListener(new AbstractField.FocusShortcut(cash, KeyCode.ENTER) {
+            @Override
+            public void handleAction(Object sender, Object target) {
+                System.out.println(">>> enter pressed!");
+            }
+        });
         Label subtotal;
         lySubtotal.addComponent(new Label("Subtotal:"));
         lySubtotal.addComponent(subtotal
@@ -89,6 +100,9 @@ public final class SellerPaymentView extends Window {
         fieldGroup.setItemDataSource(paymentTo);
         fieldGroup.bindMemberFields(this);
 
+    }
+
+    private void checkTotals(FieldEvents.TextChangeEvent event) {
     }
 
 }
