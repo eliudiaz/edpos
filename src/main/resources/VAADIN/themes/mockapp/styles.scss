@@ -12,7 +12,7 @@ $v-layout-margin: $v-layout-margin-top $v-layout-margin-right $v-layout-margin-b
     @include mockapp;
 }
 
-#subtotal{
+.subtotal{
     font-size: 18px;
     font-weight: bold;
 }
