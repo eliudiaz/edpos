@@ -7,6 +7,7 @@ package ed.cracken.pos.ui.seller;
 
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.server.DefaultErrorHandler;
 import static com.vaadin.server.DefaultErrorHandler.doDefault;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -20,9 +21,9 @@ import com.vaadin.ui.Window;
 import ed.cracken.pos.exception.ValidationException;
 import ed.cracken.pos.ui.components.DecimalNumberField;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
-import static ed.cracken.pos.ui.helpers.UIHelper.addEnterShortCutListener;
 import ed.cracken.pos.ui.seller.to.SellPaymentTo;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,9 +59,29 @@ public final class SellerPaymentView extends Window {
         lyCard.addComponent(new Label("Tarjeta:"));
         lyCard.addComponent(card = new DecimalNumberField());
         lyCard.setSpacing(true);
-
-        addEnterShortCutListener(cash, "setTotals", this);
-        addEnterShortCutListener(card, "setTotals", this);
+        FieldEvents.TextChangeListener changeListener;
+        card.addTextChangeListener(changeListener = (FieldEvents.TextChangeEvent event) -> {
+            if (!event.getText().isEmpty()) {
+                try {
+                    Double v = DataFormatHelper
+                            .getFormatter()
+                            .parse(event.getText())
+                            .doubleValue() + DataFormatHelper
+                                    .getFormatter()
+                                    .parse(card.getValue())
+                                    .doubleValue();
+                    totalPayment.setValue(DataFormatHelper
+                            .formatNumber(BigDecimal.valueOf(v)));
+                    if (paymentTo.getSubtotal().doubleValue() < v) {
+                        throw new ValidationException("Pago debe ser igual o menor al total!");
+                    }
+                }
+                catch (ParseException ex) {
+                    throw new ValidationException("Ingreso invalido!");
+                }
+            }
+        });
+        cash.addTextChangeListener(changeListener);
 
         lyPayment.addComponent(new Label("Total Pagado:"));
         lyPayment.addComponent(totalPayment
@@ -84,8 +105,8 @@ public final class SellerPaymentView extends Window {
         ok.addClickListener((ClickEvent event) -> {
             try {
                 fieldGroup.commit();
-                setTotals();
-                close();
+                checkTotalPayment();
+                SellerPaymentView.this.close();
                 sellerView.save(fieldGroup.getItemDataSource().getBean());
             }
             catch (FieldGroup.CommitException ex) {
@@ -96,7 +117,7 @@ public final class SellerPaymentView extends Window {
 
         Button ko = new Button("Cancelar");
         ok.addClickListener((ClickEvent event) -> {
-            this.close();
+            SellerPaymentView.this.close();
         });
         lyButtons.addComponent(ko);
         lyButtons.setSpacing(true);
@@ -106,11 +127,9 @@ public final class SellerPaymentView extends Window {
         fieldGroup.setItemDataSource(paymentTo);
         fieldGroup.bindMemberFields(this);
 
-        // Configure the error handler for the UI
         UI.getCurrent().setErrorHandler(new DefaultErrorHandler() {
             @Override
             public void error(com.vaadin.server.ErrorEvent event) {
-                // Find the final cause
                 String cause = "<b>Causa de error:</b><br/>";
                 for (Throwable t = event.getThrowable(); t != null;
                         t = t.getCause()) {
@@ -120,27 +139,22 @@ public final class SellerPaymentView extends Window {
                     }
                 }
 
-                // Display the error message in a custom fashion
                 layout.addComponent(new Label(cause, ContentMode.HTML));
-
-                // Do the default error handling (optional)
                 doDefault(event);
             }
         });
 
     }
 
-    public void setTotals() {
+    public void checkTotalPayment() {
         try {
             fieldGroup.commit();
             SellPaymentTo payment = fieldGroup.getItemDataSource().getBean();
-            BigDecimal tPayment;
             if (payment
-                    .getSubtotal()
-                    .compareTo(tPayment = payment.getCard().add(payment.getCash())) < 0) {
-                totalPayment.setValue(DataFormatHelper
-                        .formatNumber(tPayment));
-                throw new ValidationException("Pago excede el total!");
+                    .getSubtotal().doubleValue()
+                    != payment.getCard().add(payment.getCash())
+                            .doubleValue()) {
+                throw new ValidationException("Pago debe ser igual al total!");
             }
 
         }
