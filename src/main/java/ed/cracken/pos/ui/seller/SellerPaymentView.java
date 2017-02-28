@@ -8,6 +8,7 @@ package ed.cracken.pos.ui.seller;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.FieldEvents;
+import com.vaadin.server.DefaultErrorHandler;
 import static com.vaadin.server.DefaultErrorHandler.doDefault;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
@@ -115,7 +116,7 @@ public final class SellerPaymentView extends Window {
         lyButtons.addComponent(ok);
 
         Button ko = new Button("Cancelar");
-        ok.addClickListener((ClickEvent event) -> {
+        ko.addClickListener((ClickEvent event) -> {
             SellerPaymentView.this.close();
         });
         lyButtons.addComponent(ko);
@@ -126,18 +127,21 @@ public final class SellerPaymentView extends Window {
         fieldGroup.setItemDataSource(paymentTo);
         fieldGroup.bindMemberFields(this);
 
-        UI.getCurrent().setErrorHandler((ErrorEvent event) -> {
-            String cause = "<b>Error:</b><br/>";
-            for (Throwable t = event.getThrowable(); t != null;
-                    t = t.getCause()) {
-                if (t.getCause() == null) // We're at final cause
-                {
-                    cause += t.getMessage() + "<br/>";
+        UI.getCurrent().setErrorHandler(new DefaultErrorHandler() {
+            @Override
+            public void error(com.vaadin.server.ErrorEvent event) {
+                String cause = "<b>Error:</b><br/>";
+                for (Throwable t = event.getThrowable(); t != null;
+                        t = t.getCause()) {
+                    if (t.getCause() == null) // We're at final cause
+                    {
+                        cause += t.getMessage() + "<br/>";
+                    }
                 }
-            }
 
-            layout.addComponent(new Label(cause, ContentMode.HTML));
-            doDefault(event);
+                layout.addComponent(new Label(cause, ContentMode.HTML));
+                doDefault(event);
+            }
         });
 
     }

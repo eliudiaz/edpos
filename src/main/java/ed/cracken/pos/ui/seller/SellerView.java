@@ -21,6 +21,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import ed.cracken.pos.ui.helpers.DataFormatHelper;
+import ed.cracken.pos.ui.helpers.NotificationsHelper;
 import ed.cracken.pos.ui.seller.to.ItemTo;
 import ed.cracken.pos.ui.seller.to.SellPaymentTo;
 import ed.cracken.pos.ui.seller.to.SellSummaryTo;
@@ -167,8 +168,12 @@ public final class SellerView extends CssLayout implements View {
         saveTrx.addStyleName(ValoTheme.BUTTON_PRIMARY);
         saveTrx.setHeight("60px");
         saveTrx.addClickListener((Button.ClickEvent event) -> {
-            UI.getCurrent().addWindow(
-                    new SellerPaymentView(new SellPaymentTo(summary.getTotal()), viewLogic));
+            if (!grid.getContainerDataSource().getItemIds().isEmpty()) {
+                UI.getCurrent().addWindow(
+                        new SellerPaymentView(new SellPaymentTo(summary.getTotal()), viewLogic));
+            } else {
+                NotificationsHelper.showErrorNotification("Lista productos vacia!", "No puede guardar la transaccion sin productos!");
+            }
         });
         cancelTrx = new Button("Cancelar", FontAwesome.CLOSE);
         cancelTrx.addStyleName(ValoTheme.BUTTON_DANGER);
