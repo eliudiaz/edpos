@@ -31,4 +31,11 @@ public class Provider {
     private String name;
     private String address;
 
+    public Provider() {
+    }
+
+    public Provider(String id) {
+        this.id = id;
+    }
+
 }
