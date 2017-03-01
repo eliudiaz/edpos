@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import ed.cracken.pos.backend.model.Availability;
 import ed.cracken.pos.backend.model.Category;
@@ -92,16 +91,16 @@ public class MockDataGenerator {
         return p;
     }
 
-    private static Set<Category> getCategory(List<Category> categories,
+    private static Category getCategory(List<Category> categories,
             int min, int max) {
         int nr = random.nextInt(max) + min;
-        HashSet<Category> productCategories = new HashSet<Category>();
+        HashSet<Category> productCategories = new HashSet<>();
         for (int i = 0; i < nr; i++) {
             productCategories.add(categories.get(random.nextInt(categories
                     .size())));
         }
 
-        return productCategories;
+        return productCategories.iterator().next();
     }
 
     private static String generateName() {

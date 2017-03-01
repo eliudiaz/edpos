@@ -2,7 +2,6 @@ package ed.cracken.pos.backend.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +23,7 @@ public class Product implements Serializable {
     private String productName = "";
     @Min(0)
     private BigDecimal price = BigDecimal.ZERO;
-    private Set<Category> category;
+    private Category category;
     @Min(value = 0, message = "Can't have negative amount in stock")
     private int stockCount = 0;
     @NotNull
@@ -54,11 +53,11 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public Set<Category> getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Set<Category> category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
