@@ -125,7 +125,8 @@ public final class ProductForm extends CssLayout {
                 // only if validation succeeds
                 Product product = fieldGroup.getItemDataSource().getBean();
                 viewLogic.saveProduct(product);
-            } catch (FieldGroup.CommitException e) {
+            }
+            catch (FieldGroup.CommitException e) {
                 Notification n = new Notification(
                         "Please re-check the fields", Notification.Type.ERROR_MESSAGE);
                 n.setDelayMsec(500);

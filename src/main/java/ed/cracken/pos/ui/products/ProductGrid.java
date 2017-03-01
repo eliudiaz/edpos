@@ -87,7 +87,7 @@ public class ProductGrid extends Grid {
         getColumn("price").setConverter(new EuroConverter());
 
         // Show categories as a comma separated list
-        getColumn("category").setConverter(new CollectionToStringConverter());
+//        getColumn("category").setConverter(new CollectionToStringConverter());
 
         // Align columns using a style generator and theme rule until #15438
         setCellStyleGenerator(new CellStyleGenerator() {
