@@ -2,22 +2,28 @@ package ed.cracken.pos.backend.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Entity
 public class Product implements Serializable {
 
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id = -1;
     @NotNull
     @Size(min = 2, message = "Product name must have at least two characters")
     private String productName = "";
     @Min(0)
     private BigDecimal price = BigDecimal.ZERO;
-    private Set<Category> category;
+    private Category category;
     @Min(value = 0, message = "Can't have negative amount in stock")
     private int stockCount = 0;
     @NotNull
@@ -47,11 +53,11 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public Set<Category> getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Set<Category> category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

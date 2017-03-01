@@ -20,4 +20,8 @@ public final class NotificationsHelper {
     public static void showSaveNotification(String msg) {
         Notification.show(msg, Notification.Type.TRAY_NOTIFICATION);
     }
+
+    public static void showErrorNotification(String caption, String description) {
+        Notification.show(caption, description, Notification.Type.ERROR_MESSAGE);
+    }
 }
